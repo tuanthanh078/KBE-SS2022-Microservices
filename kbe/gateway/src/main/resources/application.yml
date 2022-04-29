@@ -1,0 +1,28 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  cloud:
+    gateway:
+      routes:
+        - id: product
+          uri: http://${PRODUCT_HOST:localhost}:8084
+          predicates:
+            - Path=/products/**,/products,/hardwares/**,/hardwares
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedHeaders:
+              - "*"
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "OPTIONS"
+      default-filters:
+        - name: Retry
+          args:
+            retries: 3
+            methods: GET,POST

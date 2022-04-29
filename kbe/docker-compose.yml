@@ -1,0 +1,102 @@
+services:
+    frontend:
+        build: ./frontend
+        container_name: frontend
+        expose:
+            - "3000"
+        ports:
+            - "3000:3000"
+        depends_on:
+            - "product"
+            - "gateway"
+        networks:
+            - kbe
+    product:
+        build: ./product
+        container_name: product
+        expose:
+            - "8084"
+        ports:
+            - "8084:8084"
+        environment:
+            MYSQL_HOST: product-mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_DB: productdb
+            SPRING_PROFILES_ACTIVE: docker
+            MONGO_HOST: product-mongo
+            RABBITMQ_HOST: rabbitmq
+        depends_on:
+            - 'product-db-mysql'
+            - 'product-db-mongo'
+            - 'rabbitmq'
+        networks:
+            - kbe
+
+    price:
+        build: ./price
+        container_name: price
+        expose:
+            - "8083"
+        ports:
+            - "8083:8083"
+        environment:
+            RABBITMQ_HOST: rabbitmq
+        depends_on:
+            - 'rabbitmq'
+        networks:
+            - kbe
+
+    product-db-mysql:
+        image: mysql:5.7
+        container_name: product-mysql
+        ports:
+            - "3305:3306"
+        networks:
+            - kbe
+        volumes:
+            - kbe-mysql-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: productdb
+
+    product-db-mongo:
+        image: mongo:5.0.7
+        container_name: product-mongo
+        ports:
+            - "27016:27017"
+        networks:
+            - kbe
+        volumes:
+            - kbe-mongo-data:/data/db
+
+    rabbitmq:
+        image: rabbitmq:3.9.15-alpine
+        container_name: rabbitmq
+        ports:
+            - '5671:5672'
+            - '15671:15672'
+        networks:
+            - kbe
+
+    gateway:
+        build: ./gateway
+        container_name: gateway
+        expose:
+            - "8000"
+        ports:
+            - "8000:8000"
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            PRODUCT_HOST: product
+        # depends on: rabbitmq
+        networks:
+            - kbe
+
+volumes:
+    kbe-mysql-data:
+    kbe-mongo-data:
+
+networks:
+    kbe:
+        driver: bridge
