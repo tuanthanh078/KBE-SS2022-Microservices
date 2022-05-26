@@ -1,34 +1,39 @@
 package kbe.project.warehouse.services;
 
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVImporter {
+@Service
+public class CSVImporter implements CSVImporterService{
 
-    public static final char DEFAULT_CSV_SEPARATOR = ';', DEFAULT_CSV_DELIMITER = '"';
+    public static final char DEFAULT_CSV_SEPARATOR = ';', CSV_DELIMITER = '"';
 
-    public List<List<String>> importCsv(String path) throws IOException, NullPointerException{
-        return importCsv(path, DEFAULT_CSV_SEPARATOR, DEFAULT_CSV_DELIMITER);
+    @Override
+    public List<List<String>> importCSV(File file) throws IOException, NullPointerException{
+        return importCSV(file, DEFAULT_CSV_SEPARATOR);
     }
-    public List<List<String>> importCsv(String path, char csvSeparator, char csvDelimiter) throws IOException, NullPointerException{
+    public List<List<String>> importCSV(File file, char csvSeparator) throws IOException, NullPointerException{
 
         List<List<String>> data = new ArrayList<>();
 
-        File file = new File(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
         String line = reader.readLine();
         while(line != null){
-            List<String> lineData = getLineData(line, csvSeparator, csvDelimiter);
+            List<String> lineData = getLineData(line, csvSeparator);
             data.add(lineData);
             line = reader.readLine();
         }
 
+        reader.close();
+
         return data;
     }
 
-    private List<String> getLineData(String line, char separator, char delimiter){
+    private List<String> getLineData(String line, char separator){
         List<String> lineData = new ArrayList<>();
 
         boolean delimited = false;
@@ -41,7 +46,7 @@ public class CSVImporter {
 
             if(delimited){
 
-                if(c == delimiter){
+                if(c == CSV_DELIMITER){
 
                     if(justDelimited){
                         word += c;
@@ -54,7 +59,7 @@ public class CSVImporter {
                 justDelimited = false;
             }else{
 
-                if(c == delimiter){
+                if(c == CSV_DELIMITER){
 
                     delimited = true;
                     justDelimited = true;

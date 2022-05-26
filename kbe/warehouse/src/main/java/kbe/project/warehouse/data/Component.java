@@ -15,7 +15,7 @@ public class Component {
     private Date date;
     private String brand;
     private String name;
-    private String component;
+    private String type;
     private String location;
     private float price;
     private float length;
@@ -24,13 +24,15 @@ public class Component {
     private boolean deliverable;
 
     protected Component(){}
-    public Component(Date date, String brand, String name, String component, String location, float price, float length, float width, int power, boolean deliverable) {
-        id = UUID.randomUUID();
-
+    public Component(Date date, String brand, String name, String type, String location, float price, float length, float width, int power, boolean deliverable) {
+        this(UUID.randomUUID(), date, brand, name, type, location, price, length, width, power, deliverable);
+    }
+    public Component(UUID id, Date date, String brand, String name, String type, String location, float price, float length, float width, int power, boolean deliverable) {
+        this.id = id;
         this.date = date;
         this.brand = brand;
         this.name = name;
-        this.component = component;
+        this.type = type;
         this.location = location;
         this.price = price;
         this.length = length;
@@ -38,6 +40,7 @@ public class Component {
         this.power = power;
         this.deliverable = deliverable;
     }
+
 
     public UUID getId() {
         return id;
@@ -55,8 +58,8 @@ public class Component {
         return name;
     }
 
-    public String getComponent() {
-        return component;
+    public String getType() {
+        return type;
     }
 
     public String getLocation() {
