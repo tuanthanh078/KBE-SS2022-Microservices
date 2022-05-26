@@ -6,12 +6,12 @@ import java.util.List;
 
 public class CSVImporter {
 
-    public static final char CSV_SEPARATOR = ';';
+    public static final char DEFAULT_CSV_SEPARATOR = ';', DEFAULT_CSV_DELIMITER = '"';
 
     public List<List<String>> importCsv(String path) throws IOException, NullPointerException{
-        return importCsv(path, CSV_SEPARATOR);
+        return importCsv(path, DEFAULT_CSV_SEPARATOR, DEFAULT_CSV_DELIMITER);
     }
-    public List<List<String>> importCsv(String path, char csvSeparator) throws IOException, NullPointerException{
+    public List<List<String>> importCsv(String path, char csvSeparator, char csvDelimiter) throws IOException, NullPointerException{
 
         List<List<String>> data = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class CSVImporter {
 
         String line = reader.readLine();
         while(line != null){
-            List<String> lineData = getLineData(line, csvSeparator);
+            List<String> lineData = getLineData(line, csvSeparator, csvDelimiter);
             data.add(lineData);
             line = reader.readLine();
         }
@@ -28,18 +28,47 @@ public class CSVImporter {
         return data;
     }
 
-    private List<String> getLineData(String line, char separator){
+    private List<String> getLineData(String line, char separator, char delimiter){
         List<String> lineData = new ArrayList<>();
-        int begin = 0;
+
+        boolean delimited = false;
+        boolean justDelimited = false;
+        String word = "";
 
         for(int i = 0; i < line.length(); i++){
-            if(line.charAt(i) == separator){
-                lineData.add(line.substring(begin,i));
-                begin = i + 1;
+
+            char c = line.charAt(i);
+
+            if(delimited){
+
+                if(c == delimiter){
+
+                    if(justDelimited){
+                        word += c;
+                    }
+                    delimited = false;
+                }else{
+
+                    word += c;
+                }
+                justDelimited = false;
+            }else{
+
+                if(c == delimiter){
+
+                    delimited = true;
+                    justDelimited = true;
+                }else if(c == separator){
+
+                    lineData.add(word);
+                    word = "";
+                }else{
+
+                    word += c;
+                }
             }
         }
-        if(begin <= line.length())
-            lineData.add(line.substring(begin));
+        lineData.add(word);
 
         return lineData;
     }
