@@ -9,6 +9,12 @@ import java.util.UUID;
 @Entity
 public class Component {
 
+    public static final String
+            TYPE_GRAPHICS = "graphics",
+            TYPE_PROCESSOR = "processor",
+            TYPE_STORAGE = "storage";
+
+
     @Id
     private UUID id;
 
@@ -24,9 +30,6 @@ public class Component {
     private boolean deliverable;
 
     protected Component(){}
-    public Component(Date date, String brand, String name, String type, String location, float price, float length, float width, int power, boolean deliverable) {
-        this(UUID.randomUUID(), date, brand, name, type, location, price, length, width, power, deliverable);
-    }
     public Component(UUID id, Date date, String brand, String name, String type, String location, float price, float length, float width, int power, boolean deliverable) {
         this.id = id;
         this.date = date;
