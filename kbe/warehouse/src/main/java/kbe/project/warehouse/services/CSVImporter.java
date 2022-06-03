@@ -73,7 +73,8 @@ public class CSVImporter implements CSVImporterService{
                 }
             }
         }
-        lineData.add(word);
+        if(word.length() > 0)
+            lineData.add(word);
 
         return lineData;
     }
