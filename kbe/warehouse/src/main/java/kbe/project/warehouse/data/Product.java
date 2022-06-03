@@ -15,7 +15,7 @@ public class Product {
     private UUID storage;
 
     protected Product(){}
-    public void Product(UUID id, Component graphics, Component processor, Component storage) throws IllegalArgumentException{
+    public Product(UUID id, Component graphics, Component processor, Component storage) throws IllegalArgumentException{
         if(graphics == null || !graphics.getType().equals(Component.TYPE_GRAPHICS))throw new IllegalArgumentException("Graphics has to be Component with type \"graphics\".");
         if(processor == null || !processor.getType().equals(Component.TYPE_PROCESSOR))throw new IllegalArgumentException("Processor has to be Component with type \"processor\".");
         if(storage == null || !storage.getType().equals(Component.TYPE_STORAGE))throw new IllegalArgumentException("Storage has to be Component with type \"storage\".");
