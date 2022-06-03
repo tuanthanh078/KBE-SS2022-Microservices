@@ -10,9 +10,9 @@ public class Product {
     @Id
     private UUID id;
 
-    private UUID graphics;
-    private UUID processor;
-    private UUID storage;
+    private UUID graphicsId;
+    private UUID processorId;
+    private UUID storageId;
 
     protected Product(){}
     public Product(UUID id, Component graphics, Component processor, Component storage) throws IllegalArgumentException{
@@ -21,24 +21,24 @@ public class Product {
         if(storage == null || !storage.getType().equals(Component.TYPE_STORAGE))throw new IllegalArgumentException("Storage has to be Component with type \"storage\".");
 
         this.id = id;
-        this.graphics = graphics.getId();
-        this.processor = processor.getId();
-        this.storage = storage.getId();
+        this.graphicsId = graphics.getId();
+        this.processorId = processor.getId();
+        this.storageId = storage.getId();
     }
 
     public UUID getId() {
         return id;
     }
 
-    public UUID getGraphics() {
-        return graphics;
+    public UUID getGraphicsId() {
+        return graphicsId;
     }
 
-    public UUID getProcessor() {
-        return processor;
+    public UUID getProcessorId() {
+        return processorId;
     }
 
-    public UUID getStorage() {
-        return storage;
+    public UUID getStorageId() {
+        return storageId;
     }
 }
