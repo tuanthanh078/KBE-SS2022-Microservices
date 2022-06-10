@@ -4,6 +4,29 @@ server:
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
+  security:
+    oauth2:
+      client:
+        provider:
+          my-keycloak-provider:
+            issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/kbe
+#            issuer-uri: http://localhost:8080/auth/realms/kbe
+            # Individual properties can also be provided this way
+        #            token-uri: http://localhost:8080/auth/realms/amrutrealm/protocol/openid-connect/token
+        #            authorization-uri: http://localhost:8080/auth/realms/amrutrealm/protocol/openid-connect/auth
+        #            userinfo-uri: http://localhost:8080/auth/realms/amrutrealm/protocol/openid-connect/userinfo
+        #            user-name-attribute: preferred_username
+        registration:
+          keycloak-spring-gateway-client:
+            provider: my-keycloak-provider
+            client-id: gateway
+            client-secret: 0tQKu8PmfgWbgqTDOBzNmYXAonf9Ywac
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+            scope: openid
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: http://localhost:8080/realms/kbe/protocol/openid-connect/certs
   cloud:
     gateway:
       routes:
@@ -14,7 +37,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:3000"
+            allowedOrigins: http://${FRONTEND_HOST:localhost}:3000
             allowedHeaders:
               - "*"
             allowedMethods:
@@ -22,6 +45,7 @@ spring:
               - "POST"
               - "OPTIONS"
       default-filters:
+        - TokenRelay
         - name: Retry
           args:
             retries: 3

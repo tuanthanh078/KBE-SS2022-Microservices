@@ -87,12 +87,29 @@ services:
         ports:
             - "8000:8000"
         environment:
-            SPRING_PROFILES_ACTIVE: docker
+#            SPRING_PROFILES_ACTIVE: docker
             PRODUCT_HOST: product
-        # depends on: rabbitmq
+            KEYCLOAK_HOST: keycloak
+            FRONTEND_HOST: frontend
+        depends_on:
+            - 'keycloak'
         networks:
             - kbe
 
+    keycloak:
+        image: quay.io/keycloak/keycloak:18.0.0
+        container_name: keycloak
+        environment:
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: admin
+        volumes:
+            - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+        ports:
+            - "8080:8080"
+        command:
+            - "start-dev --import-realm"
+        networks:
+            - kbe
 volumes:
     kbe-mysql-data:
     kbe-mongo-data:
