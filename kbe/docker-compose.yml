@@ -47,6 +47,14 @@ services:
         networks:
             - kbe
 
+    warehouse:
+        build: ./warehouse
+        container_name: warehouse
+        expose:
+            - "8085"
+        ports:
+            - "8085:8085"
+
     product-db-mysql:
         image: mysql:5.7
         container_name: product-mysql
