@@ -36,12 +36,12 @@ public class WarehouseApplication {
 	ProductRepository productRepository;
 
 	@EventListener(ApplicationReadyEvent.class)
-	public void initializeDatabase() throws IOException {
+	public void initializeDatabase() throws IOException{
 		componentImporter.importComponents();
 		productImporter.importProducts();
 	}
 
-	@GetMapping("/warehouse/components")
+	@GetMapping("/components")
 	public Component[] getComponents(){
 		Iterable<Component> componentIterable = componentRepository.findAll();
 		ArrayList<Component> components = new ArrayList<>();
@@ -51,7 +51,7 @@ public class WarehouseApplication {
 		return components.toArray(new Component[0]);
 	}
 
-	@GetMapping("/warehouse/products")
+	@GetMapping("/products")
 	public Product[] getProducts(){
 		Iterable<Product> productIterable = productRepository.findAll();
 		ArrayList<Product> products = new ArrayList<>();
