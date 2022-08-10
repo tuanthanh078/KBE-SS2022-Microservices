@@ -9,6 +9,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,8 +39,9 @@ public class CSVComponentImporter {
 
     static {
         try {
-            CSV_FILE = ResourceUtils.getFile("classpath:components.csv");
-        } catch (FileNotFoundException e) {
+            String currentPath = new java.io.File(".").getCanonicalPath();
+            CSV_FILE = new File(currentPath, "data/components.csv");
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }

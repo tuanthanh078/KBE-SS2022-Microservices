@@ -30,8 +30,9 @@ public class CSVProductImporter {
 
     static {
         try{
-            CSV_FILE = ResourceUtils.getFile("classpath:products.csv");
-        } catch (FileNotFoundException e) {
+            String currentPath = new java.io.File(".").getCanonicalPath();
+            CSV_FILE = new File(currentPath, "data/products.csv");
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
