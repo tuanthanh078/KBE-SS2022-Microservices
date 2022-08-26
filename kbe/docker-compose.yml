@@ -55,6 +55,19 @@ services:
         ports:
             - "8085:8085"
 
+    warehouse-db-mysql:
+        image: mysql:5.7
+        container_name: warehouse-mysql
+        ports:
+            - "3307:3306"
+        networks:
+            - kbe
+        volumes:
+            - kbe-mysql-data-warehouse:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABSE: warehousedb
+
     product-db-mysql:
         image: mysql:5.7
         container_name: product-mysql
@@ -103,6 +116,7 @@ services:
 
 volumes:
     kbe-mysql-data:
+    kbe-mysql-data-warehouse:
     kbe-mongo-data:
 
 networks:
