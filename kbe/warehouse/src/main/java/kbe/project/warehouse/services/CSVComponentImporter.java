@@ -53,7 +53,6 @@ public class CSVComponentImporter {
 
     public void importComponents() throws IOException {
         List<List<String>> data = csvImporter.importCSV(CSV_FILE);
-        List<Component> components = new ArrayList<>();
 
         for(int i = 1; i < data.size(); i++){
             List<String> componentData = data.get(i);
@@ -61,7 +60,7 @@ public class CSVComponentImporter {
             if(componentData.size() < AMOUNT_FIELDS)continue;
 
             try {
-                components.add(new Component(
+                Component component = new Component(
                         UUID.fromString(componentData.get(ID)),
                         COMPONENT_DATE_FORMAT.parse(componentData.get(DATE)),
                         componentData.get(BRAND),
@@ -73,12 +72,14 @@ public class CSVComponentImporter {
                         Float.parseFloat(componentData.get(WIDTH)),
                         Integer.parseInt(componentData.get(POWER)),
                         Boolean.parseBoolean(componentData.get(DELIVERABLE))
-                ));
+                );
+
+                if(!componentRepository.existsById(component.getId())){
+                    componentRepository.save(component);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-
-        componentRepository.saveAll(components);
     }
 }

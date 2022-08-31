@@ -14,7 +14,6 @@ public class Component {
             TYPE_PROCESSOR = "processor",
             TYPE_STORAGE = "storage";
 
-
     @Id
     private UUID id;
 
@@ -29,7 +28,7 @@ public class Component {
     private int power;
     private boolean deliverable;
 
-    protected Component(){}
+    public Component(){}
     public Component(UUID id, Date date, String brand, String name, String type, String location, float price, float length, float width, int power, boolean deliverable) {
         this.id = id;
         this.date = date;

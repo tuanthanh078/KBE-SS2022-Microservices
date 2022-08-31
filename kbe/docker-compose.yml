@@ -54,6 +54,16 @@ services:
             - "8085"
         ports:
             - "8085:8085"
+        environment:
+            MYSQL_HOST: warehouse-mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_DB: warehousedb
+            SPRING_PROFILES_ACTIVE: docker
+        depends_on:
+            - 'warehouse-db-mysql'
+        networks:
+            - kbe
 
     warehouse-db-mysql:
         image: mysql:5.7

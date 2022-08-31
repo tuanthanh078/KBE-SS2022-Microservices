@@ -46,7 +46,6 @@ public class CSVProductImporter {
 
     public void importProducts() throws IOException {
         List<List<String>> data = csvImporter.importCSV(CSV_FILE);
-        List<Product> products = new ArrayList<>();
 
         for(int i = 1; i < data.size(); i++){
             List<String> productData = data.get(i);
@@ -59,15 +58,18 @@ public class CSVProductImporter {
 
             if(graphics.isPresent() && processor.isPresent() && storage.isPresent()){
                 try {
-                    products.add(new Product(
+                    Product product = new Product(
                             UUID.fromString(productData.get(0)),
                             graphics.get(),
                             processor.get(),
                             storage.get()
-                    ));
+                    );
+
+                    if(!productRepository.existsById(product.getId())){
+                        productRepository.save(product);
+                    }
                 }catch(IllegalArgumentException e){}
             }
         }
-        productRepository.saveAll(products);
     }
 }
