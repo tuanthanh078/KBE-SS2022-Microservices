@@ -16,6 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <modules>
+        <module>currency</module>
         <module>dto</module>
         <module>gateway</module>
         <module>product</module>
