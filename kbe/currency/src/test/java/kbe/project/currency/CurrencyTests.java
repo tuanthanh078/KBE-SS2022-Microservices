@@ -70,4 +70,44 @@ public class CurrencyTests {
         assertEquals(newAmount, 1132.00, 5.0);
         assertEquals(currentCurrency, Currency.GBP);
     }
+
+    @Test
+    public void serviceSwitchAmount() {
+        CurrencyServiceImp currencyServiceImp = new CurrencyServiceImp();
+        double currentAmount = 13.0;
+
+        double newAmount = currencyServiceImp.switchAmount(currentAmount, "CHF", "GBP");
+
+        assertEquals(newAmount, 11.4, 0.5);
+    }
+
+    @Test
+    public void serviceSwitchAmountSameCurrency() {
+        CurrencyServiceImp currencyServiceImp = new CurrencyServiceImp();
+        double currentAmount = 200.0;
+
+        double newAmount = currencyServiceImp.switchAmount(currentAmount, "JPY", "JPY");
+
+        assertEquals(newAmount, 200.0, 0.0);
+    }
+
+    @Test
+    public void serviceSwitchAmountDefaultUSDToUSD() {
+        CurrencyServiceImp currencyServiceImp = new CurrencyServiceImp();
+        double currentAmount = 200.0;
+
+        double newAmount = currencyServiceImp.switchAmount(currentAmount, "test", "USD");
+
+        assertEquals(newAmount, 200.0, 0.0);
+    }
+
+    @Test
+    public void serviceSwitchAmountDefaultUSDToJPY() {
+        CurrencyServiceImp currencyServiceImp = new CurrencyServiceImp();
+        double currentAmount = 5.0;
+
+        double newAmount = currencyServiceImp.switchAmount(currentAmount, "test", "JPY");
+
+        assertEquals(newAmount, 693.45, 5.0);
+    }
 }

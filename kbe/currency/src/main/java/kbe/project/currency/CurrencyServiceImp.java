@@ -1,7 +1,9 @@
 package kbe.project.currency;
 
+import org.springframework.stereotype.Service;
 import static kbe.project.currency.Currency.*;
 
+@Service
 public class CurrencyServiceImp implements CurrencyService{
 
     @Override
