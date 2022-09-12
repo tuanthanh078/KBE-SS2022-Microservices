@@ -22,7 +22,7 @@ public class CustomizedProductPub {
     public Price getPrice(final CustomizedProduct customizedProduct) {
         String routingKey = "customizedProducts.price";
         Price price = (Price) amqpTemplate.convertSendAndReceive(customizedProductsTopicExchange,
-                                    routingKey, customizedProduct.getSelectedHardwares());
+                                    routingKey, customizedProduct.getSelectedComponents());
         System.out.println(price.toString());
         return price;
     }

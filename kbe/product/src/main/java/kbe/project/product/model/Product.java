@@ -16,6 +16,5 @@ public class Product {
     @Id
     private String id;
     private String name;
-    private List<SelectedHardware> selectedHardwares;
-    private Double priceUSD;
+    private List<SelectedComponents> selectedComponents;
 }

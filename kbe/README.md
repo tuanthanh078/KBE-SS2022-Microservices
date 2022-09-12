@@ -33,7 +33,7 @@
 * Get all products: GET http://localhost:8084/products
 * Get all hardwares: GET http://localhost:8084/hardwares
 * Get a specific product: GET http://localhost:8084/products/{id}
-* Get a specific hardware: GET http://localhost:8084/hardwares/{id}
+* Get a specific component: GET http://localhost:8084/hardwares/{id}
 * Customize a product: POST http://localhost:8084/custom 
     
-    `body: {"selectedHardwares": [{"hardwareId": 1, "selectedAmount": 2},...]}`
+    `body: {"selectedComponents": [{"hardwareId": 1, "selectedAmount": 2},...]}`

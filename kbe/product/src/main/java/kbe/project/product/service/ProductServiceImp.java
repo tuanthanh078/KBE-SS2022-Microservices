@@ -1,11 +1,11 @@
 package kbe.project.product.service;
 
 import kbe.project.dto.Price;
+import kbe.project.product.model.Component;
 import kbe.project.product.model.CustomizedProduct;
-import kbe.project.product.model.Hardware;
 import kbe.project.product.model.Product;
-import kbe.project.product.model.SelectedHardware;
-import kbe.project.product.repository.HardwareRepository;
+import kbe.project.product.model.SelectedComponents;
+import kbe.project.product.repository.ComponentRepository;
 import kbe.project.product.repository.ProductRepository;
 import kbe.project.product.service.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ProductServiceImp implements ProductService {
 
     private final ProductRepository productRepository;
-    private final HardwareRepository hardwareRepository;
+    private final ComponentRepository componentRepository;
     private final CustomizedProductPub customizedProductPub;
 
     @Override
@@ -40,21 +40,21 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public CustomizedProduct createCustomizedProduct(CustomizedProduct customizedProduct) {
-        List<SelectedHardware> selectedHardwares = customizedProduct.getSelectedHardwares();
-        System.out.println(selectedHardwares.toString());
-        List<Hardware> selectedHardwaresDetails = (List<Hardware>) hardwareRepository
-                .findAllById(selectedHardwares
+        List<SelectedComponents> selectedComponents = customizedProduct.getSelectedComponents();
+        System.out.println(selectedComponents.toString());
+        List<Component> selectedComponentsDetails = (List<Component>) componentRepository
+                .findAllById(selectedComponents
                         .stream()
-                        .map(selectedHardware -> selectedHardware.getHardwareId()).toList());
-        System.out.println(selectedHardwaresDetails.toString());
-        for (int i = 0; i < selectedHardwares.size(); i++) {
-            for (int j = 0; j < selectedHardwaresDetails.size(); j++) {
-                if (selectedHardwares.get(i).getHardwareId() == selectedHardwaresDetails.get(j).getId()) {
-                    selectedHardwares.get(i).setPriceUSD(selectedHardwaresDetails.get(j).getPriceUSD());
+                        .map(components -> components.getComponentId()).toList());
+        System.out.println(selectedComponentsDetails.toString());
+        for (int i = 0; i < selectedComponents.size(); i++) {
+            for (int j = 0; j < selectedComponentsDetails.size(); j++) {
+                if (selectedComponents.get(i).getComponentId().equals(selectedComponentsDetails.get(j).getId())) {
+                    selectedComponents.get(i).setPriceUSD((double) selectedComponentsDetails.get(j).getPrice());
                 }
             }
         }
-        customizedProduct.setSelectedHardwares(selectedHardwares);
+        customizedProduct.setSelectedComponents(selectedComponents);
         System.out.println(customizedProduct.toString());
         Price price = customizedProductPub.getPrice(customizedProduct);
         System.out.println(price.toString());

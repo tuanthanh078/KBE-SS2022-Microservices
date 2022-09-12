@@ -11,14 +11,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class SelectedHardware implements Serializable {
+public class SelectedComponents implements Serializable {
 
-    private Long hardwareId;
+    private Long componentId;
     private Double priceUSD;
     private int selectedAmount;
 
-    public SelectedHardware(Long hardwareId, int selectedAmount) {
-        this.hardwareId = hardwareId;
+    public SelectedComponents(Long componentId, int selectedAmount) {
+        this.componentId = componentId;
         this.selectedAmount = selectedAmount;
         this.priceUSD = 0D;
     }
