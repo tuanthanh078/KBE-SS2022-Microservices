@@ -1,5 +1,6 @@
-package kbe.project.warehouse.data;
+package kbe.project.warehouse.repository;
 
+import kbe.project.warehouse.model.Product;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

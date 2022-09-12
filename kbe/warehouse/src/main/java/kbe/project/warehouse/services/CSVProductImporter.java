@@ -1,17 +1,17 @@
 package kbe.project.warehouse.services;
 
-import kbe.project.warehouse.data.Component;
-import kbe.project.warehouse.data.ComponentRepository;
-import kbe.project.warehouse.data.Product;
-import kbe.project.warehouse.data.ProductRepository;
+import kbe.project.warehouse.WarehouseApplication;
+import kbe.project.warehouse.model.Component;
+import kbe.project.warehouse.repository.ComponentRepository;
+import kbe.project.warehouse.model.Product;
+import kbe.project.warehouse.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +45,7 @@ public class CSVProductImporter {
     private ComponentRepository componentRepository;
 
     public void importProducts() throws IOException {
+        System.out.println("Import Products ...");
         List<List<String>> data = csvImporter.importCSV(CSV_FILE);
 
         for(int i = 1; i < data.size(); i++){
@@ -52,9 +53,13 @@ public class CSVProductImporter {
 
             if(productData.size() < AMOUNT_FIELDS)continue;
 
-            Optional<Component> graphics = componentRepository.findById(UUID.fromString(productData.get(GRAPHICS)));
-            Optional<Component> processor = componentRepository.findById(UUID.fromString(productData.get(PROCESSOR)));
-            Optional<Component> storage = componentRepository.findById(UUID.fromString(productData.get(STORAGE)));
+            UUID graphicsId = UUID.fromString(productData.get(GRAPHICS));
+            UUID processorId = UUID.fromString(productData.get(PROCESSOR));
+            UUID storageId = UUID.fromString(productData.get(STORAGE));
+
+            Optional<Component> graphics = componentRepository.findById(graphicsId);
+            Optional<Component> processor = componentRepository.findById(processorId);
+            Optional<Component> storage = componentRepository.findById(storageId);
 
             if(graphics.isPresent() && processor.isPresent() && storage.isPresent()){
                 try {
@@ -65,10 +70,12 @@ public class CSVProductImporter {
                             storage.get()
                     );
 
-                    if(!productRepository.existsById(product.getId())){
+                    if(!productRepository.existsById(product.getId()))
                         productRepository.save(product);
-                    }
-                }catch(IllegalArgumentException e){}
+
+                }catch(IllegalArgumentException e){
+                    e.printStackTrace();
+                }
             }
         }
     }

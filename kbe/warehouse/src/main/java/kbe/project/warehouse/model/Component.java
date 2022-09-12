@@ -1,9 +1,9 @@
-package kbe.project.warehouse.data;
+package kbe.project.warehouse.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +15,7 @@ public class Component {
             TYPE_STORAGE = "storage";
 
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     private Date date;
@@ -42,7 +43,6 @@ public class Component {
         this.power = power;
         this.deliverable = deliverable;
     }
-
 
     public UUID getId() {
         return id;

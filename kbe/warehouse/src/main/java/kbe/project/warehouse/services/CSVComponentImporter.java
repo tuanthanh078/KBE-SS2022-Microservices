@@ -1,18 +1,14 @@
 package kbe.project.warehouse.services;
 
-import kbe.project.warehouse.data.Component;
-import kbe.project.warehouse.data.ComponentRepository;
+import kbe.project.warehouse.model.Component;
+import kbe.project.warehouse.repository.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,6 +48,8 @@ public class CSVComponentImporter {
     private ComponentRepository componentRepository;
 
     public void importComponents() throws IOException {
+        System.out.println("Import components ...");
+
         List<List<String>> data = csvImporter.importCSV(CSV_FILE);
 
         for(int i = 1; i < data.size(); i++){
@@ -74,9 +72,9 @@ public class CSVComponentImporter {
                         Boolean.parseBoolean(componentData.get(DELIVERABLE))
                 );
 
-                if(!componentRepository.existsById(component.getId())){
+                if(!componentRepository.existsById(component.getId()))
                     componentRepository.save(component);
-                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
