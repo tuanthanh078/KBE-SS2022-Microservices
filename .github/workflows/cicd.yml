@@ -7,18 +7,28 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
 
     steps:
+    
     - uses: actions/checkout@v3
+    
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'adopt'
         cache: maven
+        
+    - name: Start database containers
+      run: docker-compose -f "kbe/docker-compose.yml" up -d warehouse-db-mysql product-db-mysql product-db-mongo
+      
     - name: Build with Maven
-#       run: mvn -B package --file pom.xml
       run: mvn -f kbe/pom.xml clean package
+      
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "kbe/docker-compose.yml" down
