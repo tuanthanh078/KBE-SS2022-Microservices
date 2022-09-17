@@ -49,7 +49,7 @@ jobs:
       id: docker_build_product
       with:
         context: ./kbe/product/
-        file: ./Dockerfile
+        file: ./kbe/product/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/product
@@ -59,7 +59,7 @@ jobs:
       id: docker_build_warehouse
       with:
         context: ./kbe/warehouse/
-        file: ./Dockerfile
+        file: ./kbe/warehouse/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/warehouse
@@ -69,7 +69,7 @@ jobs:
       id: docker_build_price
       with:
         context: ./kbe/price/
-        file: ./Dockerfile
+        file: ./kbe/price/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/price
@@ -79,7 +79,7 @@ jobs:
       id: docker_build_frontend
       with:
         context: ./kbe/frontend/
-        file: ./Dockerfile
+        file: ./kbe/frontend/Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend
