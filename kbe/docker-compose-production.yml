@@ -111,7 +111,7 @@ services:
             - kbe
 
     gateway:
-        bimage: thanhtr068/gateway
+        image: thanhtr068/gateway
         container_name: gateway
         expose:
             - "8000"
