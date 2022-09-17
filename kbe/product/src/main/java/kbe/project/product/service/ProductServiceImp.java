@@ -50,7 +50,7 @@ public class ProductServiceImp implements ProductService {
         for (int i = 0; i < selectedComponents.size(); i++) {
             for (int j = 0; j < selectedComponentsDetails.size(); j++) {
                 if (selectedComponents.get(i).getComponentId().equals(selectedComponentsDetails.get(j).getId())) {
-                    selectedComponents.get(i).setPriceUSD((double) selectedComponentsDetails.get(j).getPrice());
+                    selectedComponents.get(i).setPrice(selectedComponentsDetails.get(j).getPrice());
                 }
             }
         }

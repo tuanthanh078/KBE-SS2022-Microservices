@@ -14,12 +14,12 @@ import java.io.Serializable;
 public class SelectedComponents implements Serializable {
 
     private Long componentId;
-    private Double priceUSD;
+    private Double price;
     private int selectedAmount;
 
     public SelectedComponents(Long componentId, int selectedAmount) {
         this.componentId = componentId;
         this.selectedAmount = selectedAmount;
-        this.priceUSD = 0D;
+        this.price = 0D;
     }
 }

@@ -34,7 +34,7 @@ public class Component {
     private String name;
     private String type;
     private String location;
-    private float price;
+    private Double price;
     private float length;
     private float width;
     private int power;
