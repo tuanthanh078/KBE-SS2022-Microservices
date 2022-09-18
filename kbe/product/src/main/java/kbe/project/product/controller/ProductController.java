@@ -1,5 +1,7 @@
 package kbe.project.product.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import kbe.project.product.model.CustomizedProduct;
 import kbe.project.product.model.Product;
 import kbe.project.product.service.ProductService;
@@ -19,22 +21,35 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
+    @Operation(summary = "Get all products.")
     ResponseEntity<List<Product>> getProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Product> getProductById(@PathVariable String id) {
+    @Operation(summary = "Get product by id.")
+    ResponseEntity<Product> getProductById(
+            @Parameter(description = "UUID of the product")
+            @PathVariable String id) {
+
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    Product addProduct(@RequestBody Product product) {
+    @Operation(summary = "Add a product.")
+    Product addProduct(
+            @Parameter(description = "Product that needs to be added")
+            @RequestBody Product product) {
+
         return productService.addProduct(product);
     }
 
     @PostMapping("/custom")
-    ResponseEntity<CustomizedProduct> createCustomizedProduct(@RequestBody CustomizedProduct customizedProduct) {
+    @Operation(summary = "Create a product.")
+    ResponseEntity<CustomizedProduct> createCustomizedProduct(
+            @Parameter(description = "Customized product which is created from hardwares.")
+            @RequestBody CustomizedProduct customizedProduct) {
+
         return ResponseEntity.ok(productService.createCustomizedProduct(customizedProduct));
     }
 }

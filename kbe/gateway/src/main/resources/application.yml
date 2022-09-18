@@ -1,6 +1,13 @@
 server:
   port: 8000
+  forward-headers-strategy: framework
 
+springdoc:
+  swagger-ui:
+    enabled: true
+    urls:
+      - name: product
+        url: /product-api
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
@@ -10,18 +17,15 @@ spring:
         - id: product
           uri: http://${PRODUCT_HOST:localhost}:8084
           predicates:
-            - Path=/products/**,/products,/hardwares/**,/hardwares
+            - Path=/products/**,/hardwares/**,/product-api/**
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:3000"
-            allowedHeaders:
-              - "*"
-            allowedMethods:
-              - "GET"
-              - "POST"
-              - "OPTIONS"
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
       default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - name: Retry
           args:
             retries: 3
