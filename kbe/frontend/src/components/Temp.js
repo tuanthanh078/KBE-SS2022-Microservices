@@ -5,7 +5,7 @@ class Temp extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.SERVER_URL = 'http://localhost:8000';
+    this.SERVER_URL = 'http://localhost:8085';
     this.GET_PRODUCTS = '/products';
     this.emptyProduct = {id: "", name: "", selectedHardwares: {hardwareId: "", selectedAmount: ""}};
     this.state = {

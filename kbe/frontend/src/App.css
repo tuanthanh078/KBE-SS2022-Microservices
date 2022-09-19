@@ -1,24 +1,59 @@
-.App {
-  text-align: center;
+body{
+
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+button {
+   background-color: grey;
+   border: none;
+
+   padding: 10px 10px 10px 10px;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: 100%;
+}
+button:hover {
+    background-color: lightgrey;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.invisible {
+    display: none;
 }
 
-.App-intro {
-  font-size: large;
+.textField {
+    margin-bottom: 2em;
+}
+.textField label{
+    padding: 50px 0;
+    max-width: 100%;
+}
+.textField input{
+    background-color: lightgrey;
+    border: none;
+
+    width: auto;
+    max-width: 100%;
+    height: 2em;
+    float: right;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.login {
+    text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: min(50%, 25em);
+    margin-bottom: auto;
+    width: 50%;
+}
+.login .info {
+    display: inline-block;
+    color: red;
+    outline: 1px solid red;
+
+    padding: 0.5em;
+    margin-bottom: 1.5em;
+    width: 100%;
+}
+.login button {
+    width: max(4em,40%);
 }
