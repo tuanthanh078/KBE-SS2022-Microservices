@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Info(title = "Product API", version = "1.0", description = "Documentation Product API v1.0")
 )
 public class ProductApplication {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ProductApplication.class, args);
 	}

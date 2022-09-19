@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class ComponentServiceImp implements ComponentService {
     private final ComponentRepository componentRepository;
 
     @Override
-    public Component getComponentById(Long id) {
+    public Component getComponentById(UUID id) {
         return componentRepository.findById(id).orElseThrow(() -> new ComponentNotFoundException(id));
     }
 

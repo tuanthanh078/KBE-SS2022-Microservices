@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Document
 @AllArgsConstructor
@@ -13,13 +16,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SelectedComponents implements Serializable {
 
-    private Long componentId;
-    private Double priceUSD;
+    @Id
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID componentId;
+    private Double price;
     private int selectedAmount;
 
-    public SelectedComponents(Long componentId, int selectedAmount) {
+    public SelectedComponents(UUID componentId, int selectedAmount) {
         this.componentId = componentId;
         this.selectedAmount = selectedAmount;
-        this.priceUSD = 0D;
+        this.price = 0D;
     }
 }

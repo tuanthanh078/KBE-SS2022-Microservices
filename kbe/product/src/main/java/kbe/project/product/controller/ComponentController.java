@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class ComponentController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Component> getProductById(@PathVariable Long id) {
+    ResponseEntity<Component> getProductById(@PathVariable UUID id) {
         return ResponseEntity.ok(componentService.getComponentById(id));
     }
 

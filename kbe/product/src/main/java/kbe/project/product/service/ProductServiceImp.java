@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ProductServiceImp implements ProductService {
     private final CustomizedProductPub customizedProductPub;
 
     @Override
-    public Product getProductById(String id) {
+    public Product getProductById(UUID id) {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
@@ -50,7 +51,7 @@ public class ProductServiceImp implements ProductService {
         for (int i = 0; i < selectedComponents.size(); i++) {
             for (int j = 0; j < selectedComponentsDetails.size(); j++) {
                 if (selectedComponents.get(i).getComponentId().equals(selectedComponentsDetails.get(j).getId())) {
-                    selectedComponents.get(i).setPriceUSD((double) selectedComponentsDetails.get(j).getPrice());
+                    selectedComponents.get(i).setPrice(selectedComponentsDetails.get(j).getPrice());
                 }
             }
         }
