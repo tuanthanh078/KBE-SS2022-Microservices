@@ -6,13 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Document
 @Data
-@AllArgsConstructor
 public class Product {
 
     @Id
@@ -38,6 +36,11 @@ public class Product {
         components.add(storage);
     }
 
+    public Product(UUID id, Set<Component> components) {
+        this.id = id;
+        this.components = components;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -59,6 +62,4 @@ public class Product {
             if(component.getType().equals(type))return component;
         throw new IllegalArgumentException("Component type \"" + type + "\" is not valid.");
     }
-
-    private List<SelectedComponents> selectedComponents;
 }
