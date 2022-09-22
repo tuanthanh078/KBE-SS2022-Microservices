@@ -7,26 +7,97 @@ button {
    border: none;
 
    padding: 10px 10px 10px 10px;
-   margin-left: auto;
-   margin-right: auto;
    max-width: 100%;
 }
 button:hover {
-    background-color: lightgrey;
+    background-color: #a0a0a0;
 }
 
-.invisible {
-    display: none;
+select {
+    background-color: grey;
+    border: none;
+
+    padding: 10px 10px 10px 10px;
+    max-width: 100%;
+}
+select:hover {
+    background-color: #a0a0a0;
+}
+select:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+li {
+    background-color: #f2f2f2;
+    height: 100%;
+
+    padding: 1em;
+    padding-left: max(1em, 5%);
+}
+li:nth-child(even) {
+    background-color: white;
+}
+li:hover {
+    background-color: #e2e2e2;
+}
+
+.listProduct {
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+
+    height: 100%;
+    width: 32%;
+}
+#listGraphics {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.productList {
+    height: 100%;
+}
+
+.bar {
+    height: 3em;
+
+    display: flex;
+    flex-direction: row;
+
+    outline: 1px solid black;
+}
+.bar button {
+    width: min(, 4em);
+
+    margin-left: auto;
+    margin-right: 0;
+}
+.bar input {
+    border: none;
+
+    width: 100%;
+    padding-left: min(5%, 2em);
+    padding-right: min(5%, 2em);
+}
+.bar input:focus {
+    outline: none;
 }
 
 .textField {
     margin-bottom: 2em;
 }
-.textField label{
+.textField label {
     padding: 50px 0;
     max-width: 100%;
 }
-.textField input{
+.textField input {
     background-color: lightgrey;
     border: none;
 
@@ -55,5 +126,7 @@ button:hover {
     width: 100%;
 }
 .login button {
+    margin-left: auto;
+    margin-right: auto;
     width: max(4em,40%);
 }

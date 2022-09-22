@@ -46,7 +46,8 @@ class Login extends Component{
             <div name="login" className="login">
                 {this.state.info ?
                     <label className="info">username or password incorrect</label> :
-                    null}
+                    null
+                }
                 <TextField label="Username" type="text" value={this.state.username} onChange={this.onUsernameChange}/>
                 <TextField label="Password" type="password" value={this.state.password} onChange={this.onPasswordChange}/>
                 <button onClick={this.sendLogin}>
