@@ -7,10 +7,11 @@ class Main extends Component{
     constructor(props){
         super(props);
 
-        this.state = {elements: [], component: null};
+        this.state = {elements: [], component: null, product: null};
 
         this.onSubmit = this.onSubmit.bind(this);
         this.updateProducts = this.updateProducts.bind(this);
+        this.onSelectProduct = this.onSelectProduct.bind(this);
         this.updateComponents = this.updateComponents.bind(this);
         this.onSelectComponent = this.onSelectComponent.bind(this);
 
@@ -39,12 +40,16 @@ class Main extends Component{
         productRequest.send();
     }
 
+    onSelectProduct(product){
+        this.setState({product: product});
+    }
+
     updateComponents(){
         let componentRequest = new XMLHttpRequest();
         componentRequest.open("GET", this.props.url+ENDPOINT_COMPONENTS);
         componentRequest.onreadystatechange = (e) => {
             if(componentRequest.readyState === 4 && componentRequest.status === 200){
-                this.setState({elements: JSON.parse(componentRequest.response)});
+                this.setState({elements: JSON.parse(componentRequest.response), product: null});
             }
         }
         componentRequest.send();
@@ -58,9 +63,13 @@ class Main extends Component{
         return(
             <div name='main' className='main'>
                 <NavigationBar onSubmit={this.onSubmit}/>
-                <ElementList elements={this.state.elements} category={this.displayed} onSelectComponent={this.onSelectComponent}/>
+                <ElementList elements={this.state.elements} category={this.displayed} onSelectComponent={this.onSelectComponent} onSelectProduct={this.onSelectProduct}/>
                 {(this.state.component !== null) ?
                     <ComponentDetails component={this.state.component}/> :
+                    null
+                }
+                {(this.state.product !== null) ?
+                    <ProductDetails product={this.state.product}/> :
                     null
                 }
             </div>
@@ -108,12 +117,18 @@ class ElementList extends Component{
         }
     }
 
+    onProductClick(){
+        if(typeof this.component.props.onSelectProduct === "function"){
+            this.component.props.onSelectProduct(this.element);
+        }
+    }
+
     render(){
         let listElements;
         if(this.props.category === "products"){
             listElements = this.props.elements.map(
                 product =>
-                    <li key={product.id} className='product'>
+                    <li key={product.id} onClick={this.onProductClick.bind({component: this, element: product})} className='product'>
                         <div className='productList'>
                             <label id='listProcessor' className='listProduct'>{product.processor.name}</label>
                             <label id='listGraphics' className='listProduct'>{product.graphics.name}</label>
@@ -137,15 +152,72 @@ class ElementList extends Component{
     }
 }
 
+class ProductDetails extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {value: "processor", component: this.props.product.processor};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.getComponent = this.getComponent.bind(this);
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.product !== this.props.product){
+            let component = this.getComponent(this.state.value);
+            this.setState({component: component});
+        }
+    }
+
+    handleChange(e){
+        let component = this.getComponent(e.target.value);
+        this.setState({value: event.target.value, component: component});
+    }
+
+    getComponent(type){
+        let component;
+        switch(type) {
+            case "processor":
+                component = this.props.product.processor;
+                break;
+            case "graphics":
+                component = this.props.product.graphics;
+                break;
+            case "storage":
+                component = this.props.product.storage;
+                break;
+            default:
+        }
+        return component;
+    }
+
+    render(){
+        return(
+            <div className='details' id='productDetails'>
+                <div className='productHeadline'>
+                    <label id='productHeadline'>Product</label>
+                    <label id='productHeadlineId'>{" (" + this.props.product.id + ")"}</label>
+                    <select value={this.state.value} onChange={this.handleChange} id='productHeadlineSelect'>
+                        <option value="processor">Processor</option>
+                        <option value="graphics">Graphics</option>
+                        <option value="storage">Storage</option>
+                    </select>
+                </div>
+                <ComponentDetails component={this.state.component}/>
+            </div>
+        );
+    }
+}
+
 class ComponentDetails extends Component{
     render(){
-        console.log(this.props.component);
         return(
-            <div className='details'>
-                <h3 >{this.props.component.brand + " - " + this.props.component.name}</h3>
-                <KeyValueDisplay keyName='Id' value={this.props.component.id}/>
+            <div className='details' id='componentDetails'>
+                <h3>{this.props.component.brand + " - " + this.props.component.name}</h3>
+                <KeyValueDisplay keyName='Id' value={this.props.component.id} id='idDetail'/>
                 <KeyValueDisplay keyName='Type' value={this.props.component.type}/>
-                <KeyValueDisplay keyName='Price' value={this.props.component.price}/>
+                <KeyValueDisplay keyName='Price' value={this.props.component.price.toFixed(2)}/>
                 <KeyValueDisplay keyName='Deliverable' value={this.props.component.deliverable ? "Yes" : "No"}/>
                 <KeyValueDisplay keyName='Location' value={this.props.component.location}/>
                 <KeyValueDisplay keyName='Dimensions' value={this.props.component.width + "mm, " + this.props.component.length + "mm"}/>

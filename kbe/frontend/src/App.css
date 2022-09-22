@@ -103,16 +103,48 @@ li:hover {
     outline: none;
 }
 
+.productHeadline{
+    display: flex;
+
+    border-bottom: 1px solid black;
+    padding-top: 1em;
+}
+#productHeadline{
+    font-size: 1.3em;
+    font-weight: bold;
+
+    display: inline-block;
+    width: max(4em, 12%);
+    padding_right: 1em;
+}
+#productHeadlineId{
+    display: inline-block;
+    color: #606060;
+}
+#productHeadlineSelect{
+    margin-left: auto;
+    margin-right: 0;
+}
+
+#productDetails {
+    height: 50%;
+}
+.details #componentDetails {
+    height: 75%;
+    padding: 0;
+}
 .details {
     overflow: auto;
-    background-color: lightblue;
+    //background-color: #d8f3fa;
+    background-color: #d1d1d1;
 
     position: absolute;
-    padding-left: max(1em, 5vw);
-    padding-right: max(1em, 5vw);
+    padding-left: max(1em, 5%);
+    padding-right: max(1em, 5%);
     bottom: 0px;
-    height: 35vh;
-    width: calc(100vw - max(2em, 10%));
+    height: 35%;
+    width: calc(100% - max(2em, 10%));
+    max-width: 45em;
 }
 .details h3 {
     border-bottom: 1px solid black;
@@ -123,16 +155,11 @@ li:hover {
 .details .key {
     overflow: hidden;
 
-    width: calc(100vw - max(2em, 10vw));
+    width: 100%;
 }
 .details .value {
     text-align: right;
-    width: calc(100vw - max(2em, 10vw));
-}
-
-#main {
-    height: 100vh;
-    width: 100vw;
+    width: 100%;
 }
 
 .textField {
@@ -159,7 +186,7 @@ li:hover {
     margin-left: auto;
     margin-right: auto;
     margin-top: min(50%, 25em);
-    margin-bottom: auto;
+    margin-bottom: 0;
     width: 50%;
 }
 .login .info {
