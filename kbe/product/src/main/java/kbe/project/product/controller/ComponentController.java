@@ -1,5 +1,7 @@
 package kbe.project.product.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import kbe.project.product.model.Component;
 import kbe.project.product.service.ComponentService;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +21,24 @@ public class ComponentController {
     private final ComponentService componentService;
 
     @GetMapping
-    ResponseEntity<List<Component>> getProducts() {
+    @Operation(summary = "Get all components.")
+    ResponseEntity<List<Component>> getComponents() {
         return ResponseEntity.ok(componentService.getAllComponents());
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Component> getProductById(@PathVariable UUID id) {
+    @Operation(summary = "Get component by id.")
+    ResponseEntity<Component> getComponentById(
+            @Parameter(description = "UUID of the component")
+            @PathVariable UUID id) {
         return ResponseEntity.ok(componentService.getComponentById(id));
     }
 
     @PostMapping
-    Component addComponent(@RequestBody Component component) {
+    @Operation(summary = "Add a component.")
+    Component addComponent(
+            @Parameter(description = "Component that needs to be added")
+            @RequestBody Component component) {
         return componentService.addComponent(component);
     }
 }

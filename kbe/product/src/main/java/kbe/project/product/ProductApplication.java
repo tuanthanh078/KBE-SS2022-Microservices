@@ -14,6 +14,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @SpringBootApplication
 @OpenAPIDefinition(info =
@@ -39,31 +44,59 @@ public class ProductApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void initializeDatabase() {
+		productRepository.deleteAll();
+		componentRepository.deleteAll();
 
+		initializeComponentEntries();
+		initializeProductEntries();
+	}
+
+	private void initializeProductEntries() {
 		if (productRepository.count() == 0) {
-			System.out.println("initializing Product Database by adding example products");
-			productService.addProduct(ExampleEntries.getExampleProduct1());
-			productService.addProduct(ExampleEntries.getExampleProduct2());
-			productService.addProduct(ExampleEntries.getExampleProduct3());
-			productService.addProduct(ExampleEntries.getExampleProduct4());
-			productService.addProduct(ExampleEntries.getExampleProduct5());
-			System.out.println("added example products");
+			URI uri = getWarehouseUri("products");
+
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<Product[]> result = restTemplate.getForEntity(uri, Product[].class);
+
+			for (Product product: result.getBody()) {
+				productService.addProduct(product);
+			}
 		}
+
+		productService.addProduct(ExampleEntries.getExampleProduct4());
+		productService.addProduct(ExampleEntries.getExampleProduct5());
 
 		for (Product product: productService.getAllProducts()) {
 			System.out.println(product);
 		}
+	}
 
-		if (componentRepository.count() == 0) {
-			System.out.println("initializing Component Database by adding example components");
-			componentService.addComponent(ExampleEntries.getExampleGraphics1());
-			componentService.addComponent(ExampleEntries.getExampleGraphics2());
-			componentService.addComponent(ExampleEntries.getExampleProcessor1());
-			componentService.addComponent(ExampleEntries.getExampleProcessor2());
-			componentService.addComponent(ExampleEntries.getExampleStorage1());
-			componentService.addComponent(ExampleEntries.getExampleStorage2());
-			System.out.println("added example components");
+	private URI getWarehouseUri(String request) {
+		String baseUrl = "http://localhost:8085/"+ request;
+		URI uri;
+		try {
+			uri = new URI(baseUrl);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
 		}
+		return uri;
+	}
+
+	private void initializeComponentEntries() {
+		if (productRepository.count() == 0) {
+			URI uri = getWarehouseUri("components");
+
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<Component[]> result = restTemplate.getForEntity(uri, Component[].class);
+
+			for (Component component: result.getBody()) {
+				componentService.addComponent(component);
+			}
+		}
+
+		componentService.addComponent(ExampleEntries.getExampleGraphics2());
+		componentService.addComponent(ExampleEntries.getExampleProcessor2());
+		componentService.addComponent(ExampleEntries.getExampleStorage2());
 
 		for (Component component: componentService.getAllComponents()) {
 			System.out.println(component);

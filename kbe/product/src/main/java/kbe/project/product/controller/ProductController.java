@@ -32,7 +32,6 @@ public class ProductController {
     ResponseEntity<Product> getProductById(
             @Parameter(description = "UUID of the product")
             @PathVariable UUID id) {
-
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
