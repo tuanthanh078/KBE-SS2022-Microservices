@@ -67,7 +67,9 @@ public class ExampleEntries {
                     228.6f,
                     112.6f,
                     175,
-                    false
+                    false,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -86,7 +88,9 @@ public class ExampleEntries {
                     242.0f,
                     112.6f,
                     170,
-                    true
+                    true,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -105,7 +109,9 @@ public class ExampleEntries {
                     45.0f,
                     37.5f,
                     240,
-                    true
+                    true,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -124,7 +130,9 @@ public class ExampleEntries {
                     45.0f,
                     37.5f,
                     117,
-                    true
+                    true,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -143,7 +151,9 @@ public class ExampleEntries {
                     147.0f,
                     102.0f,
                     4,
-                    true
+                    true,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -162,7 +172,9 @@ public class ExampleEntries {
                     150.0f,
                     102.0f,
                     5,
-                    false
+                    false,
+                    1D,
+                    1D
             );
         } catch (ParseException e) {
             throw new RuntimeException(e);

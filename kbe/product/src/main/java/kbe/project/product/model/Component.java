@@ -39,4 +39,6 @@ public class Component {
     private float width;
     private int power;
     private boolean deliverable;
+    private Double osmLat;
+    private Double osmLon;
 }
