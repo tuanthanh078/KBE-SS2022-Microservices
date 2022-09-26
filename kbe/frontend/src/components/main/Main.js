@@ -31,7 +31,7 @@ function requestProducts(url, onReceive, onFail){
 function requestCreateProduct(url, product, onReceive, onFail){
     sendHtmlRequest("POST", url+ENDPOINT_PRODUCTS_CREATE, onReceive, onFail, product);
 }
-function sendHtmlRequest(method, url, onReceive, onFail, body){
+export function sendHtmlRequest(method, url, onReceive, onFail, body){
     let request = new XMLHttpRequest();
     request.open(method, url);
     request.onreadystatechange = (e) => {
@@ -48,6 +48,26 @@ function sendHtmlRequest(method, url, onReceive, onFail, body){
         request.send(JSON.stringify(body));
     }else
         request.send();
+}
+
+function createRawProduct(price, component1, component2, component3){
+    return {
+        price: price,
+        components: [
+            component1,
+            component2,
+            component3
+        ]
+    };
+}
+function createProduct(id, price, processor, graphics, storage){
+    return {
+        id: id,
+        price: price,
+        processor: processor,
+        graphics: graphics,
+        storage: storage
+    }
 }
 
 class Main extends Component{
@@ -76,7 +96,6 @@ class Main extends Component{
     }
 
     componentDidMount(){
-        requestProducts(this.props.url, this.updateProducts, this.onUpdateFail);
         requestComponents(this.props.url, this.updateComponents, this.onUpdateFail);
 
         this.displayProducts();
@@ -84,7 +103,6 @@ class Main extends Component{
 
     onSubmit(options){
         if(!this.state.loaded){
-            requestProducts(this.props.url, this.updateProducts, this.onUpdateFail);
             requestComponents(this.props.url, this.updateComponents, this.onUpdateFail);
         }
 
@@ -104,7 +122,6 @@ class Main extends Component{
         this.setState({type: type});
 
         if(!this.state.loaded){
-            requestProducts(this.props.url, this.updateProducts, this.onUpdateFail);
             requestComponents(this.props.url, this.updateComponents, this.onUpdateFail);
         }
 
@@ -120,7 +137,27 @@ class Main extends Component{
     }
 
     updateProducts(response){
-        this.setState({products: JSON.parse(response), loaded: true});
+        let rawProducts = JSON.parse(response);
+        console.log(rawProducts);
+        let products = rawProducts.map(product =>
+            createRawProduct(
+                product.price.price,
+                this.state.components.find(component => component.id === product.selectedComponents[0].componentId),
+                this.state.components.find(component => component.id === product.selectedComponents[1].componentId),
+                this.state.components.find(component => component.id === product.selectedComponents[2].componentId)
+            )
+        );
+        let id = 0;
+        products = products.map(product =>
+            createProduct(
+                id++,
+                product.price,
+                product.components.find(component => component.type === "processor"),
+                product.components.find(component => component.type === "graphics"),
+                product.components.find(component => component.type === "storage")
+            )
+        );
+        this.setState({products: products, loaded: true});
     }
 
     onSelectProduct(product){
@@ -133,6 +170,7 @@ class Main extends Component{
 
     updateComponents(response){
         this.setState({components: JSON.parse(response), loaded: true});
+        requestProducts(this.props.url, this.updateProducts, this.onUpdateFail);
     }
 
     onSelectComponent(component){

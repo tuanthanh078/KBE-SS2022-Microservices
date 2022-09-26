@@ -1,8 +1,48 @@
 import React, { Component } from "react";
 
 import KeyValueDisplay from "../KeyValueDisplay.js";
+import sendHtmlRequest from "./Main.js";
+
+const ENDPOINT_CURRENCY = "/currency";
+
+function getCurrencySymbol(currency){
+    switch(currency){
+        case "EUR":
+            return '€';
+        case "GBP":
+            return '£';
+        case "JPY":
+            return '¥';
+        case "CHF":
+            return 'CHF';
+        default:
+            return '$';
+    }
+}
+
+function requestPrice(url, onReceive, onFail, value, priorCurrency, currency){
+    let requestParams =
+        "?amount="+value+
+        "&currentCurrency="+priorCurrency+
+        "&newCurrency="+currency;
+    sendHtmlRequest("GET", url + ENDPOINT_CURRENCY + requestParams, onReceive, onFail);
+}
 
 class ComponentDetails extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {price: null};
+    }
+
+    onReceivePrice(response){
+        console.log(response);
+    }
+
+    onFailPrice(){
+        this.setState({price: "ERR"});
+    }
+
     render(){
         return(
             <div className='details' id='componentDetails'>
@@ -17,21 +57,6 @@ class ComponentDetails extends Component{
                 <KeyValueDisplay keyName='Manufactured' value={this.props.component.date.substring(0, 10)}/>
             </div>
         );
-    }
-}
-
-function getCurrencySymbol(currency){
-    switch(currency){
-        case "EUR":
-            return '€';
-        case "GBP":
-            return '£';
-        case "JPY":
-            return '¥';
-        case "CHF":
-            return 'CHF';
-        default:
-            return '$';
     }
 }
 
