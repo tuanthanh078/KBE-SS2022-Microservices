@@ -73,7 +73,7 @@ public class ProductApplication {
 	}
 
 	private URI getWarehouseUri(String request) {
-		String baseUrl = "http://localhost:8085/"+ request;
+		String baseUrl = "http://warehouse:8085/"+ request;
 		URI uri;
 		try {
 			uri = new URI(baseUrl);
