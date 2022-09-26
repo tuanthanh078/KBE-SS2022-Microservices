@@ -136,6 +136,7 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             PRODUCT_HOST: product
+            CURRENCY_HOST: currency
         # depends on: rabbitmq
         networks:
             - kbe
