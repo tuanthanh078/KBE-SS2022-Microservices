@@ -27,4 +27,10 @@ public class SelectedComponents implements Serializable {
         this.selectedAmount = selectedAmount;
         this.price = 0D;
     }
+
+    public SelectedComponents(String componentId, int selectedAmount) {
+        this.componentId = UUID.fromString(componentId);
+        this.selectedAmount = selectedAmount;
+        this.price = 0D;
+    }
 }
