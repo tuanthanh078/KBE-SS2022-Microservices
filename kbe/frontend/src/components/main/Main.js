@@ -15,6 +15,8 @@ const DISPLAY_COMPONENTS = "components";
 const DISPLAY_CREATE_PRODUCT = "create";
 const DISPLAY_ERROR = "error";
 
+const MESSAGE_CREATE_FAILED = "Could not create product.";
+
 function requestComponents(url, onReceive, onFail){
     sendHtmlRequest("GET", url+ENDPOINT_COMPONENTS, onReceive, onFail);
 }
@@ -111,6 +113,7 @@ class Main extends Component{
     }
 
     onSubmitProduct(product){
+        this.setState({createFailed: false});
         requestCreateProduct(this.props.url, product, this.onCreated, this.onCreateFail);
     }
 
@@ -152,7 +155,7 @@ class Main extends Component{
 
             case DISPLAY_CREATE_PRODUCT:
                 content =
-                    <ProductCreation components={this.state.components} onSubmit={this.onSubmitProduct}/>
+                    <ProductCreation components={this.state.components} onSubmit={this.onSubmitProduct} error={this.state.createFailed ? MESSAGE_CREATE_FAILED : undefined}/>
                 break;
 
             default:
@@ -166,7 +169,7 @@ class Main extends Component{
         return(
             <div name='main' className='main'>
                 <NavigationBar onSubmit={this.onSubmit} onCreate={this.onCreate}/>
-                    {this.getContent()}
+                {this.getContent()}
             </div>
         );
     }

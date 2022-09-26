@@ -6,8 +6,8 @@ class ProductCreation extends Component{
     constructor(props){
         super(props);
 
-        let message = (this.props.message === undefined) ? ERROR_MESSAGE : this.props.message;
-        this.state = {processor: "none", graphics: "none", storage: "none", info: false, infoMessage: message};
+        let message = (this.props.error === undefined) ? null : this.props.error;
+        this.state = {processor: "none", graphics: "none", storage: "none", info: message};
 
         this.setMessage = this.setMessage.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -20,10 +20,11 @@ class ProductCreation extends Component{
     }
 
     setMessage(){
-        if(this.props.message === undefined){
-            this.setState({infoMessage: ERROR_MESSAGE});
+        console.log(this.props);
+        if(this.props.error === undefined){
+            this.setState({info: null});
         }else{
-            this.setState({infoMessage: this.props.message});
+            this.setState({info: this.props.error});
         }
     }
 
@@ -39,7 +40,7 @@ class ProductCreation extends Component{
                 );
             }
         }else{
-            this.setState({info: true});
+            this.setState({info: ERROR_MESSAGE});
         }
     }
 
@@ -47,7 +48,7 @@ class ProductCreation extends Component{
         if(prevProps.components !== this.props.components)
             this.updateComponents();
 
-        if(prevProps.message !== this.props.message)
+        if(prevProps.error !== this.props.error)
             this.setMessage();
     }
 
@@ -83,7 +84,7 @@ class ProductCreation extends Component{
         return(
             <div className='productCreation'>
                 {this.state.info ?
-                    <label className="info">{this.state.infoMessage}</label> :
+                    <label className="info">{this.state.info}</label> :
                     null
                 }
                 <select value={this.state.processor} onChange={this.onProcessorChange}>
