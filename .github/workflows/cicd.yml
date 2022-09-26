@@ -54,6 +54,16 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/product
         
+    - name: Build and Push Currency Image
+      uses: docker/build-push-action@v2
+      id: docker_build_currency
+      with:
+        context: ./kbe/currency/
+        file: ./kbe/currency/Dockerfile
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/currency
+        
     - name: Build and Push Warehouse Image
       uses: docker/build-push-action@v2
       id: docker_build_warehouse
