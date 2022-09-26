@@ -36,11 +36,6 @@ public class Product {
         components.add(storage);
     }
 
-    public Product(UUID id, Set<Component> components) {
-        this.id = id;
-        this.components = components;
-    }
-
     public UUID getId() {
         return id;
     }

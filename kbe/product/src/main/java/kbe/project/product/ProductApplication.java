@@ -2,6 +2,7 @@ package kbe.project.product;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import kbe.project.product.examples.ExampleEntries;
 import kbe.project.product.model.Component;
 import kbe.project.product.model.Product;
 import kbe.project.product.repository.ComponentRepository;
@@ -56,14 +57,12 @@ public class ProductApplication {
 
 	private void initializeProductEntries() {
 		if (productRepository.count() == 0) {
-			URI uri = getWarehouseUri("products");
-
-			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Product[]> result = restTemplate.getForEntity(uri, Product[].class);
-
-			for (Product product: result.getBody()) {
-				productService.addProduct(product);
-			}
+			ExampleEntries exampleEntries = new ExampleEntries(this.componentService);
+			productService.addProduct(exampleEntries.defineProduct1());
+			productService.addProduct(exampleEntries.defineProduct2());
+			productService.addProduct(exampleEntries.defineProduct3());
+			productService.addProduct(exampleEntries.defineProduct4());
+			productService.addProduct(exampleEntries.defineProduct5());
 		}
 
 		System.out.println("Products in database:");
