@@ -138,7 +138,6 @@ class Main extends Component{
 
     updateProducts(response){
         let rawProducts = JSON.parse(response);
-        console.log(rawProducts);
         let products = rawProducts.map(product =>
             createRawProduct(
                 product.price.price,
@@ -202,9 +201,9 @@ class Main extends Component{
         let details;
 
         if(this.state.component !== null){
-            details = <ComponentDetails component={this.state.component} currency={this.state.currency}/>;
+            details = <ComponentDetails component={this.state.component} currency={this.state.currency} url={this.props.url}/>;
         }else if(this.state.product !== null){
-            details = <ProductDetails product={this.state.product} currency={this.state.currency}/>;
+            details = <ProductDetails product={this.state.product} currency={this.state.currency} url={this.props.url}/>;
         }else{
             let id = (this.state.display === DISPLAY_PRODUCTS) ? "productDetails" : "componentDetails";
             details = <div className="details" id={id}/>;

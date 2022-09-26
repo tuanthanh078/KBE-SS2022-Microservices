@@ -54,7 +54,7 @@ class ProductDetails extends Component{
                         <option value="storage">Storage</option>
                     </select>
                 </div>
-                <ComponentDetails component={this.state.component} currency={this.props.currency}/>
+                <ComponentDetails component={this.state.component} currency={this.props.currency} url={this.props.url}/>
             </div>
         );
     }
