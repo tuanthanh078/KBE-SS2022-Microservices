@@ -68,31 +68,23 @@ public class ProductApplication {
 		System.out.println("Products in database:");
 
 		for (Product product: productService.getAllProducts()) {
-			System.out.println(product);
+			System.out.println(product.getId() + ":");
+			System.out.println(product.getGraphics().getId().toString() + ":");
+			System.out.println(product.getGraphics().getName());
+			System.out.println(product.getStorage().getId().toString() + ":");
+			System.out.println(product.getStorage().getName());
+			System.out.println(product.getProcessor().getId().toString() + ":");
+			System.out.println(product.getProcessor().getName());
 		}
-	}
-
-	private URI getWarehouseUri(String request) {
-		String baseUrl = "http://localhost:8085/"+ request;
-		URI uri;
-		try {
-			uri = new URI(baseUrl);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-		return uri;
 	}
 
 	private void initializeComponentEntries() {
 		if (componentRepository.count() == 0) {
-			URI uri = getWarehouseUri("components");
-
-			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Component[]> result = restTemplate.getForEntity(uri, Component[].class);
+			ExampleEntries exampleEntries = new ExampleEntries(this.componentService);
 
 			System.out.println("Fetching OSM-Data...");
 
-			for (Component component: result.getBody()) {
+			for (Component component: exampleEntries.getExampleComponents()) {
 				setOsmData(component.getLocation());
 				component.setOsmLat(getOsmLat());
 				component.setOsmLon(getOsmLon());
@@ -103,7 +95,8 @@ public class ProductApplication {
 		System.out.println("Components in database:");
 
 		for (Component component: componentService.getAllComponents()) {
-			System.out.println(component);
+			System.out.println(component.getId().toString() + ":");
+			System.out.println(component.getName());
 		}
 	}
 

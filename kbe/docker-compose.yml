@@ -31,7 +31,6 @@ services:
             - 'product-db-mysql'
             - 'product-db-mongo'
             - 'rabbitmq'
-            - 'warehouse'
         networks:
             - kbe
 

@@ -25,7 +25,6 @@ public class Component {
             TYPE_STORAGE = "storage";
 
     @Id
-    @GeneratedValue
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
