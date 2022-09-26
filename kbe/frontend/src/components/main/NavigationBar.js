@@ -3,20 +3,22 @@ import React, { Component } from "react";
 class NavigationBar extends Component{
     constructor(props){
         super(props);
-        this.state = {type: "products", currency: "USD"};
 
         this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onCreate = this.onCreate.bind(this);
+        this.onLogout = this.onLogout.bind(this);
     }
 
     handleTypeChange(event){
-        this.setState({type: event.target.value});
+        if(typeof this.props.onTypeChange === "function")
+            this.props.onTypeChange(event);
     }
 
     handleCurrencyChange(event){
-        this.setState({currency: event.target.value});
+        if(typeof this.props.onCurrencyChange === "function")
+            this.props.onCurrencyChange(event);
     }
 
     onSubmit(){
@@ -31,22 +33,28 @@ class NavigationBar extends Component{
         }
     }
 
+    onLogout(){
+        if(typeof this.props.onLogout === "function"){
+            this.props.onLogout();
+        }
+    }
+
     render(){
         return(
             <div className='bar'>
                 <button onClick={this.onCreate}>Create Product</button>
-                <select value={this.state.type} onChange={this.handleTypeChange}>
+                <select value={this.props.type} onChange={this.handleTypeChange}>
                     <option value="products">Products</option>
                     <option value="components">Components</option>
                 </select>
-                <select value={this.state.currency} onChange={this.handleCurrencyChange}>
+                <select value={this.props.currency} onChange={this.handleCurrencyChange}>
                     <option value="USD">US-Dollar</option>
                     <option value="EUR">Euro</option>
                     <option value="GBP">Pound</option>
                     <option value="JPY">Yen</option>
                     <option value="CHF">Swiss Franc</option>
                 </select>
-                <button id='buttonSubmit' onClick={this.onSubmit}>Show</button>
+                <button onClick={this.onLogout}>Logout</button>
             </div>
         );
     }

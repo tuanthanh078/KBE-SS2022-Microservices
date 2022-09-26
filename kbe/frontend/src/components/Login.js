@@ -10,12 +10,12 @@ class Login extends Component{
         this.sendLogin = this.sendLogin.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+
+        console.log('TODO: send http login request');
+        console.log('Temporarily hardcoded: user:admin pw:admin');
     }
 
     sendLogin(event){
-        console.log('TODO: send http login request');
-        console.log('Temporarily hardcoded: user:admin pw:admin');
-
         this.setState({info:false});
         let valid = true;
 

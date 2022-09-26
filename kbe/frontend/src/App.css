@@ -50,10 +50,20 @@ li:hover {
     background-color: #e2e2e2;
 }
 
+.error {
+    display: block;
+    color: red;
+    text-align: center;
+
+    border: 1px solid red;
+    padding: 1em;
+    margin: 1em;
+}
+
 .list {
     overflow: auto;
 
-    height: calc(65vh - 3em);
+    height: calc(60vh - 3em);
 }
 
 .listProduct {
@@ -87,10 +97,10 @@ li:hover {
 .bar button {
     overflow: hidden;
 
-    width: min(20vw, 10em);
+    width: min(20vw);
 }
 .bar select {
-    width: min(30vw, 15em);
+    width: min(30vw);
 }
 .bar #buttonSubmit{
     margin-right: 0;
@@ -136,7 +146,7 @@ li:hover {
     padding-left: max(1em, 5%);
     padding-right: max(1em, 5%);
     bottom: 0px;
-    height: 35%;
+    height: 40%;
     width: calc(100% - max(2em, 10%));
     max-width: 45em;
 }

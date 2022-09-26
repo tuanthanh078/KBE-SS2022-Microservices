@@ -20,7 +20,6 @@ class ProductCreation extends Component{
     }
 
     setMessage(){
-        console.log(this.props);
         if(this.props.error === undefined){
             this.setState({info: null});
         }else{
