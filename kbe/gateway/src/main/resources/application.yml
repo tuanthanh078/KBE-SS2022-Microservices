@@ -17,7 +17,11 @@ spring:
         - id: product
           uri: http://${PRODUCT_HOST:localhost}:8084
           predicates:
-            - Path=/products/**,/hardwares/**,/product-api/**
+            - Path=/products/**,/components/**,/product-api/**
+        - id: currency
+          uri: http://${CURRENCY_HOST:localhost}:8087
+          predicates:
+            - Path=/currency/**
       globalcors:
         cors-configurations:
           '[/**]':
