@@ -31,6 +31,7 @@ services:
             - 'product-db-mysql'
             - 'product-db-mongo'
             - 'rabbitmq'
+            - 'warehouse'
         networks:
             - kbe
 
@@ -41,6 +42,20 @@ services:
             - "8083"
         ports:
             - "8083:8083"
+        environment:
+            RABBITMQ_HOST: rabbitmq
+        depends_on:
+            - 'rabbitmq'
+        networks:
+            - kbe
+
+    currency:
+        build: ./currency
+        container_name: currency
+        expose:
+            - "8087"
+        ports:
+            - "8087:8087"
         environment:
             RABBITMQ_HOST: rabbitmq
         depends_on:
