@@ -49,7 +49,7 @@ services:
             - kbe
 
     currency:
-        build: ./currency
+        image: thanhtr068/currency
         container_name: currency
         expose:
             - "8087"
@@ -135,6 +135,7 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             PRODUCT_HOST: product
+            CURRENCY_HOST: currency
         # depends on: rabbitmq
         networks:
             - kbe
