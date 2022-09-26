@@ -12,11 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomizedProduct {
-    private List<SelectedHardware> selectedHardwares;
+    private List<SelectedComponents> selectedComponents;
     private Price price;
 
-    public CustomizedProduct(List<SelectedHardware> selectedHardwares) {
-        this.selectedHardwares = selectedHardwares;
+    public CustomizedProduct(List<SelectedComponents> selectedComponents) {
+        this.selectedComponents = selectedComponents;
         this.price = new Price(0D, "USD");
     }
 }

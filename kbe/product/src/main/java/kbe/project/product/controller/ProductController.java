@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,8 +31,7 @@ public class ProductController {
     @Operation(summary = "Get product by id.")
     ResponseEntity<Product> getProductById(
             @Parameter(description = "UUID of the product")
-            @PathVariable String id) {
-
+            @PathVariable UUID id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
