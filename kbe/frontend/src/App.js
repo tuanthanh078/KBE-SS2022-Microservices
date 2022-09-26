@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Login from './components/Login';
-import Main from './components/Main';
+import Main from './components/main/Main';
 
 const SERVER_URL = 'http://localhost:8085';
 
