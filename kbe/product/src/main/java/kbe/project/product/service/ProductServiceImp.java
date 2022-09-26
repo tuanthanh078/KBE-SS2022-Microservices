@@ -50,6 +50,7 @@ public class ProductServiceImp implements ProductService {
             CustomizedProduct customizedProduct = getCustomizedProduct(product);
             Price price = customizedProductPub.getPrice(customizedProduct);
             customizedProduct.setPrice(price);
+//            customizedProduct = createCustomizedProduct(customizedProduct);
             customizedProductList.add(customizedProduct);
         }
         return customizedProductList;

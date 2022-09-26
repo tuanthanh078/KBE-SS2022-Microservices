@@ -10,13 +10,13 @@ import java.util.List;
 @Slf4j
 public class PriceServiceImp implements PriceService {
     @Override
-    public Price calculatePrice(List<SelectedHardware> selectedHardwares) {
-        System.out.println(selectedHardwares.toString());
+    public Price calculatePrice(List<SelectedComponents> selectedComponents) {
+        System.out.println(selectedComponents.toString());
         Double price = 0D;
 
-        for (SelectedHardware selectedHardware: selectedHardwares) {
-            System.out.println(selectedHardware);
-            price += selectedHardware.getPriceUSD() * selectedHardware.getSelectedAmount();
+        for (SelectedComponents selectedComponent: selectedComponents) {
+            System.out.println(selectedComponent);
+            price += selectedComponent.getPrice() * selectedComponent.getSelectedAmount();
         }
 
         return new Price(price, "USD");

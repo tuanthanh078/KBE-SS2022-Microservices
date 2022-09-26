@@ -18,10 +18,10 @@ public class CustomizedProductHandler {
     private final PriceService priceService;
 
     @RabbitListener(queues = "${amqp.queue.price}")
-    Price handleCustomizedProduct(List<SelectedHardware> selectedHardwares) {
-        log.info("Customized Product received: {}", selectedHardwares.toString());
+    Price handleCustomizedProduct(List<SelectedComponents> selectedComponents) {
+        log.info("Customized Product received: {}", selectedComponents.toString());
         try {
-            Price price = priceService.calculatePrice(selectedHardwares);
+            Price price = priceService.calculatePrice(selectedComponents);
             System.out.println(price);
             return price;
         } catch (final Exception e) {

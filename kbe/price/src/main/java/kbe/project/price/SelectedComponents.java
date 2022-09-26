@@ -5,19 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class SelectedHardware implements Serializable {
+public class SelectedComponents implements Serializable {
 
-    private Long hardwareId;
-    private Double priceUSD;
+    private UUID componentId;
+    private Double price;
     private int selectedAmount;
 
-    public SelectedHardware(Long hardwareId, int selectedAmount) {
-        this.hardwareId = hardwareId;
+    public SelectedComponents(UUID componentId, int selectedAmount) {
+        this.componentId = componentId;
         this.selectedAmount = selectedAmount;
-        this.priceUSD = 0D;
+        this.price = 0D;
     }
 }
