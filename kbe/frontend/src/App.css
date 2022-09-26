@@ -26,7 +26,6 @@ select:hover {
 }
 select:focus {
     outline: none;
-    border: none;
     box-shadow: none;
 }
 
@@ -82,25 +81,20 @@ li:hover {
 
     outline: 1px solid black;
 }
+.bar *{
+    border-right: 1px solid black;
+}
 .bar button {
     overflow: hidden;
 
-    width: min(20vw, 5em);
-    margin-left: auto;
-    margin-right: 0;
+    width: min(20vw, 10em);
 }
 .bar select {
-    width: min(30vw, 10em);
+    width: min(30vw, 15em);
 }
-.bar input {
-    border: none;
-
-    width: 100%;
-    padding-left: min(5%, 2em);
-    padding-right: min(5%, 2em);
-}
-.bar input:focus {
-    outline: none;
+.bar #buttonSubmit{
+    margin-right: 0;
+    margin-left:auto;
 }
 
 .productHeadline{
@@ -162,6 +156,33 @@ li:hover {
     width: 100%;
 }
 
+.productCreation {
+    width: min(100vw, 20em);
+    height: 100%;
+    padding-top: max(10%, 3em);
+    margin-left: auto;
+    margin-right: auto;
+}
+.productCreation * {
+    display: block;
+
+    height: 3em;
+    margin: auto;
+    margin-bottom: 10%;
+}
+.productCreation select {
+    width: 100%;
+}
+
+.info {
+    text-align: center;
+    display: block;
+    color: red;
+    border: 1px solid red;
+
+    padding: 0.5em;
+}
+
 .textField {
     margin-bottom: 2em;
 }
@@ -185,16 +206,11 @@ li:hover {
 
     margin-left: auto;
     margin-right: auto;
-    margin-top: min(50%, 25em);
+    margin-top: 50%;
     margin-bottom: 0;
     width: 50%;
 }
 .login .info {
-    display: inline-block;
-    color: red;
-    outline: 1px solid red;
-
-    padding: 0.5em;
     margin-bottom: 1.5em;
     width: 100%;
 }

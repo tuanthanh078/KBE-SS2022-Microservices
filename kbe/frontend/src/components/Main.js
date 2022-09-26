@@ -2,68 +2,93 @@ import React, { Component } from "react";
 
 const ENDPOINT_PRODUCTS = "/products";
 const ENDPOINT_COMPONENTS = "/components";
+const ENDPOINT_PRODUCTS_CREATE = "/products/custom";
 
 class Main extends Component{
     constructor(props){
         super(props);
 
-        this.state = {elements: [], component: null, product: null};
+        this.state = {display: "products", products: [], components: [], component: null, product: null};
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.displayProducts = this.displayProducts.bind(this);
         this.updateProducts = this.updateProducts.bind(this);
         this.onSelectProduct = this.onSelectProduct.bind(this);
+        this.displayComponents = this.displayComponents.bind(this);
         this.updateComponents = this.updateComponents.bind(this);
         this.onSelectComponent = this.onSelectComponent.bind(this);
-
-        this.displayed = "products";
-        this.updateProducts();
+        this.onUpdateFail = this.onUpdateFail.bind(this);
+        this.onCreate = this.onCreate.bind(this);
+        this.onSubmitProduct = this.onSubmitProduct.bind(this);
+        this.onCreated = this.onCreated.bind(this);
+        this.onCreateFail = this.onCreateFail.bind(this);
     }
 
-    onSubmit(category){
-        if(category === "products" && this.displayed !== "products"){
-            this.updateProducts();
-            this.displayed = category;
-        }else if(category === "components" && this.displayed !== "components"){
-            this.updateComponents();
-            this.displayed = category;
+    componentDidMount(){
+        requestProducts(this.props.url, this.updateProducts, this.onUpdateFail);
+        requestComponents(this.props.url, this.updateComponents, this.onUpdateFail);
+
+        this.displayProducts();
+    }
+
+    onSubmit(options){
+        if(options.type === "products" && this.state.display !== "products"){
+            this.displayProducts();
+        }else if(options.type === "components" && this.state.display !== "components"){
+            this.displayComponents();
         }
     }
 
-    updateProducts(){
-        let productRequest = new XMLHttpRequest();
-        productRequest.open("GET", this.props.url+ENDPOINT_PRODUCTS);
-        productRequest.onreadystatechange = (e) => {
-            if(productRequest.readyState === 4 && productRequest.status === 200){
-                this.setState({elements: JSON.parse(productRequest.response), component: null});
-            }
-        }
-        productRequest.send();
+    displayProducts(){
+        this.setState({component: null, display: "products"});
+    }
+
+    updateProducts(response){
+        this.setState({products: JSON.parse(response)});
     }
 
     onSelectProduct(product){
         this.setState({product: product});
     }
 
-    updateComponents(){
-        let componentRequest = new XMLHttpRequest();
-        componentRequest.open("GET", this.props.url+ENDPOINT_COMPONENTS);
-        componentRequest.onreadystatechange = (e) => {
-            if(componentRequest.readyState === 4 && componentRequest.status === 200){
-                this.setState({elements: JSON.parse(componentRequest.response), product: null});
-            }
-        }
-        componentRequest.send();
+    displayComponents(){
+        this.setState({product: null, display:"components"});
+    }
+
+    updateComponents(response){
+        this.setState({components: JSON.parse(response)});
     }
 
     onSelectComponent(component){
         this.setState({component: component});
     }
 
+    onUpdateFail(){
+        this.setState({display: "failed"});
+    }
+
+    onCreate(){
+        this.setState({display: "create"});
+    }
+
+    onSubmitProduct(product){
+        requestCreateProduct(this.props.url, product, this.onCreated, this.onCreateFail);
+    }
+
+    onCreated(response){
+        console.log("PRODUCT created");
+    }
+
+    onCreateFail(){
+        this.setState({createFailed: true});
+    }
+
     render(){
-        return(
-            <div name='main' className='main'>
-                <NavigationBar onSubmit={this.onSubmit}/>
-                <ElementList elements={this.state.elements} category={this.displayed} onSelectComponent={this.onSelectComponent} onSelectProduct={this.onSelectProduct}/>
+        let content;
+        if(this.state.display === "products" || this.state.display === "components"){
+            content =
+            <div>
+                <ElementList elements={(this.state.display === "products") ? this.state.products : this.state.components} category={this.state.display} onSelectComponent={this.onSelectComponent} onSelectProduct={this.onSelectProduct}/>
                 {(this.state.component !== null) ?
                     <ComponentDetails component={this.state.component}/> :
                     null
@@ -73,38 +98,98 @@ class Main extends Component{
                     null
                 }
             </div>
+        }else if(this.state.display === "create"){
+            content =
+            <div>
+                <ProductCreation components={this.state.components} onSubmit={this.onSubmitProduct}/>
+            </div>
+        }else if(this.state.display === "failed"){
+            content =
+            <label className="error">An error occurred while loading products and components.</label>
+        }
+        return(
+            <div name='main' className='main'>
+                <NavigationBar onSubmit={this.onSubmit} onCreate={this.onCreate}/>
+                    {content}
+            </div>
         );
     }
+}
+
+function requestComponents(url, onReceive, onFail){
+    sendHtmlRequest("GET", url+ENDPOINT_COMPONENTS, onReceive, onFail);
+}
+function requestProducts(url, onReceive, onFail){
+    sendHtmlRequest("GET", url+ENDPOINT_PRODUCTS, onReceive, onFail);
+}
+function requestCreateProduct(url, product, onReceive, onFail){
+    sendHtmlRequest("POST", url+ENDPOINT_PRODUCTS_CREATE, onReceive, onFail, product);
+}
+function sendHtmlRequest(method, url, onReceive, onFail, body){
+    let request = new XMLHttpRequest();
+    request.open(method, url);
+    request.onreadystatechange = (e) => {
+        if(request.readyState === 4){
+            if(request.status >= 200 && request.status < 300){
+                onReceive(request.response);
+            }else{
+                onFail({status: request.status, response: request.response});
+            }
+        }
+    }
+    if(body !== undefined)
+        request.send(JSON.stringify(body));
+    else
+        request.send();
 }
 
 class NavigationBar extends Component{
     constructor(props){
         super(props);
-        this.state = {value: "products"};
+        this.state = {type: "products", currency: "USD"};
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onCreate = this.onCreate.bind(this);
     }
 
-    handleChange(event){
-        this.setState({value: event.target.value});
+    handleTypeChange(event){
+        this.setState({type: event.target.value});
+    }
+
+    handleCurrencyChange(event){
+        this.setState({currency: event.target.value});
     }
 
     onSubmit(){
         if(typeof this.props.onSubmit === "function"){
-            this.props.onSubmit(this.state.value);
+            this.props.onSubmit({type: this.state.type, currency: this.state.currency});
+        }
+    }
+
+    onCreate(){
+        if(typeof this.props.onCreate === "function"){
+            this.props.onCreate();
         }
     }
 
     render(){
         return(
             <div className='bar'>
-                <select value={this.state.value} onChange={this.handleChange}>
+                <button onClick={this.onCreate}>Create Product</button>
+                <select value={this.state.type} onChange={this.handleTypeChange}>
                     <option value="products">Products</option>
                     <option value="components">Components</option>
                 </select>
-                <input type="text" placeholder="Search"/>
-                <button onClick={this.onSubmit}>Show</button>
+                <select value={this.state.currency} onChange={this.handleCurrencyChange}>
+                    <option value="USD">US-Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="GBP">Pound</option>
+                    <option value="JPY">Yen</option>
+                    <option value="CHF">Swiss Franc</option>
+                </select>
+                <button id='buttonSubmit' onClick={this.onSubmit}>Show</button>
             </div>
         );
     }
@@ -144,9 +229,9 @@ class ElementList extends Component{
 
         return(
             <div className='list'>
-            <ul>
-                {listElements}
-            </ul>
+                <ul>
+                    {listElements}
+                </ul>
             </div>
         );
     }
@@ -235,6 +320,110 @@ class KeyValueDisplay extends Component{
                 <label className='value'>{this.props.value}</label>
             </div>
         );
+    }
+}
+
+const ERROR_MESSAGE = "Please choose one component of each type.";
+class ProductCreation extends Component{
+
+    constructor(props){
+        super(props);
+
+        let message = (this.props.message === undefined) ? ERROR_MESSAGE : this.props.message;
+        this.state = {processor: "none", graphics: "none", storage: "none", info: false, infoMessage: message};
+
+        this.setMessage = this.setMessage.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onProcessorChange = this.onProcessorChange.bind(this);
+        this.onGraphicsChange = this.onGraphicsChange.bind(this);
+        this.onStorageChange = this.onStorageChange.bind(this);
+        this.updateComponents = this.updateComponents.bind(this);
+
+        this.updateComponents();
+    }
+
+    setMessage(){
+        if(this.props.message === undefined){
+            this.setState({infoMessage: ERROR_MESSAGE});
+        }else{
+            this.setState({infoMessage: this.props.message});
+        }
+    }
+
+    onSubmit(){
+        if(this.state.processor !== "none" && this.state.graphics !== "none" && this.state.storage !== "none"){
+            if(typeof this.props.onSubmit === "function"){
+                this.props.onSubmit(
+                    {
+                        processor: this.props.components.find(component => component.id === this.state.processor),
+                        graphics: this.props.components.find(component => component.id === this.state.graphics),
+                        storage: this.props.components.find(component => component.id === this.state.storage)
+                    }
+                );
+            }
+        }else{
+            this.setState({info: true});
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.components !== this.props.components)
+            this.updateComponents();
+
+        if(prevProps.message !== this.props.message)
+            this.setMessage();
+    }
+
+    updateComponents(){
+        this.processors = this.props.components.filter(component => component.type === "processor");
+        this.graphics = this.props.components.filter(component => component.type === "graphics");
+        this.storages = this.props.components.filter(component => component.type === "storage");
+
+        this.processorOptions = this.processors.map(
+            processor => <option value={processor.id} key={processor.id}>{processor.brand + " - " + processor.name}</option>
+        );
+        this.graphicsOptions = this.graphics.map(
+            graphics => <option value={graphics.id} key={graphics.id}>{graphics.brand + " - " + graphics.name}</option>
+        );
+        this.storageOptions = this.storages.map(
+            storage => <option value={storage.id} key={storage.id}>{storage.brand + " - " + storage.name}</option>
+        );
+    }
+
+    onProcessorChange(event){
+        this.setState({processor: event.target.value});
+    }
+
+    onGraphicsChange(event){
+        this.setState({graphics: event.target.value});
+    }
+
+    onStorageChange(event){
+        this.setState({storage: event.target.value});
+    }
+
+    render(){
+        return(
+            <div className='productCreation'>
+                {this.state.info ?
+                    <label className="info">{this.state.infoMessage}</label> :
+                    null
+                }
+                <select value={this.state.processor} onChange={this.onProcessorChange}>
+                    <option value="none">None</option>
+                    {this.processorOptions}
+                </select>
+                <select value={this.state.graphics} onChange={this.onGraphicsChange}>
+                    <option value="none">None</option>
+                    {this.graphicsOptions}
+                </select>
+                <select value={this.state.storage} onChange={this.onStorageChange}>
+                    <option value="none">None</option>
+                    {this.storageOptions}
+                </select>
+                <button onClick={this.onSubmit}>Submit</button>
+            </div>
+        )
     }
 }
 
