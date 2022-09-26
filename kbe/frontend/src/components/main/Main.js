@@ -29,7 +29,14 @@ function requestProducts(url, onReceive, onFail){
     sendHtmlRequest("GET", url+ENDPOINT_PRODUCTS, onReceive, onFail);
 }
 function requestCreateProduct(url, product, onReceive, onFail){
-    sendHtmlRequest("POST", url+ENDPOINT_PRODUCTS_CREATE, onReceive, onFail, product);
+    let body = {
+        selectedComponents: [
+            product.processor.id,
+            product.graphics.id,
+            product.storage.id
+        ]
+    }
+    sendHtmlRequest("POST", url+ENDPOINT_PRODUCTS_CREATE, onReceive, onFail, body);
 }
 export function sendHtmlRequest(method, url, onReceive, onFail, body){
     let request = new XMLHttpRequest();
@@ -44,7 +51,7 @@ export function sendHtmlRequest(method, url, onReceive, onFail, body){
         }
     }
     if(body !== undefined){
-        request.setRequestHeader('Content-type', 'multipart/form-data');
+        request.setRequestHeader('Content-type', 'application/json');
         request.send(JSON.stringify(body));
     }else
         request.send();
