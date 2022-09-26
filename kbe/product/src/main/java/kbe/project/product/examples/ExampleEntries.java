@@ -80,6 +80,10 @@ public class ExampleEntries {
         tmpSet.add(getExampleStorage2());
         tmpSet.add(getExampleProcessor1());
         tmpSet.add(getExampleProcessor2());
+        tmpSet.add(getExampleComponent1());
+        tmpSet.add(getExampleComponent2());
+        tmpSet.add(getExampleComponent3());
+        tmpSet.add(getExampleComponent4());
         return tmpSet;
     }
 
@@ -201,6 +205,90 @@ public class ExampleEntries {
                     102.0f,
                     5,
                     false,
+                    1D,
+                    1D
+            );
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Component getExampleComponent1() {
+        try {
+            return new Component(UUID.fromString("49fe7fff-d676-4cb2-b1c4-dc41e50e66cb"),
+                    COMPONENT_DATE_FORMAT.parse("2020-01-01"),
+                    "be quiet!",
+                    "STRAIGHT POWER 11",
+                    "power supply",
+                    "Mains",
+                    159.90D,
+                    160.0f,
+                    150.0f,
+                    1200,
+                    true,
+                    1D,
+                    1D
+            );
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Component getExampleComponent2() {
+        try {
+            return new Component(UUID.fromString("f3609db9-1c70-45e3-9e93-fb395b8af0ce"),
+                    COMPONENT_DATE_FORMAT.parse("2021-06-07"),
+                    "EVGA",
+                    "SuperNOVA 650 GT",
+                    "power supply",
+                    "Berlin",
+                    97.90D,
+                    150.0f,
+                    150.0f,
+                    650,
+                    false,
+                    1D,
+                    1D
+            );
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Component getExampleComponent3() {
+        try {
+            return new Component(UUID.fromString("bbfa9a5a-67b9-44b5-8da4-ce16adf08305"),
+                    COMPONENT_DATE_FORMAT.parse("2019-12-12"),
+                    "MSI",
+                    "Z97 GAMING 3",
+                    "board",
+                    "Rostock",
+                    129.00D,
+                    3050.0f,
+                    2440.0f,
+                    0,
+                    true,
+                    1D,
+                    1D
+            );
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Component getExampleComponent4() {
+        try {
+            return new Component(UUID.fromString("e7e0cc9d-a300-4032-8b6c-44d439845676"),
+                    COMPONENT_DATE_FORMAT.parse("2021-03-22"),
+                    "MSI",
+                    "MEG Z690 UNIFY",
+                    "board",
+                    "Dresden",
+                    550.00D,
+                    3050.0f,
+                    2440.0f,
+                    0,
+                    true,
                     1D,
                     1D
             );
