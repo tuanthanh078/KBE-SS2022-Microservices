@@ -18,8 +18,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.*;
@@ -67,7 +65,7 @@ public class ProductApplication {
 
 		System.out.println("Products in database:");
 
-		for (Product product: productService.getAllProducts()) {
+		for (Product product: productRepository.findAll()) {
 			System.out.println(product.getId() + ":");
 			System.out.println(product.getGraphics().getId().toString() + ":");
 			System.out.println(product.getGraphics().getName());

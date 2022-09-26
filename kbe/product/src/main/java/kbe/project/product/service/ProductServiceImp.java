@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,13 +26,33 @@ public class ProductServiceImp implements ProductService {
     private final CustomizedProductPub customizedProductPub;
 
     @Override
-    public Product getProductById(UUID id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+    public CustomizedProduct getProductById(UUID id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        CustomizedProduct customizedProduct = getCustomizedProduct(product);
+        Price price = customizedProductPub.getPrice(customizedProduct);
+        customizedProduct.setPrice(price);
+        return customizedProduct;
+    }
+
+    private CustomizedProduct getCustomizedProduct(Product product) {
+        List<SelectedComponents> selectedComponents = new ArrayList<>();
+        for (Component component : product.getComponents()) {
+            selectedComponents.add(component.toSelectedComponents());
+        }
+        return new CustomizedProduct(selectedComponents);
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<CustomizedProduct> getAllProducts() {
+        List<Product> productList = productRepository.findAll();
+        List<CustomizedProduct> customizedProductList = new ArrayList<>();
+        for (Product product : productList) {
+            CustomizedProduct customizedProduct = getCustomizedProduct(product);
+            Price price = customizedProductPub.getPrice(customizedProduct);
+            customizedProduct.setPrice(price);
+            customizedProductList.add(customizedProduct);
+        }
+        return customizedProductList;
     }
 
     @Override

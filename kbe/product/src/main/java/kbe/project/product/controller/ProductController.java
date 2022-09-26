@@ -23,13 +23,13 @@ public class ProductController {
 
     @GetMapping
     @Operation(summary = "Get all products.")
-    ResponseEntity<List<Product>> getProducts() {
+    ResponseEntity<List<CustomizedProduct>> getProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product by id.")
-    ResponseEntity<Product> getProductById(
+    ResponseEntity<CustomizedProduct> getProductById(
             @Parameter(description = "UUID of the product")
             @PathVariable UUID id) {
         return ResponseEntity.ok(productService.getProductById(id));

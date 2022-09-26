@@ -40,4 +40,8 @@ public class Component {
     private boolean deliverable;
     private Double osmLat;
     private Double osmLon;
+
+    public SelectedComponents toSelectedComponents() {
+        return new SelectedComponents(this.id,this.price,1);
+    }
 }
