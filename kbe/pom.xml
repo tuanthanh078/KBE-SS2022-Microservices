@@ -8,19 +8,22 @@
     <artifactId>kbe</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+
     <properties>
-<!--        <java.version>17</java.version>-->
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
     <modules>
         <module>currency</module>
         <module>dto</module>
         <module>gateway</module>
         <module>product</module>
         <module>price</module>
+        <module>warehouse</module>
     </modules>
 
 

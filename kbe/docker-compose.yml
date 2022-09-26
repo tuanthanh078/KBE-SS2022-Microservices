@@ -31,6 +31,7 @@ services:
             - 'product-db-mysql'
             - 'product-db-mongo'
             - 'rabbitmq'
+            - 'warehouse'
         networks:
             - kbe
 
@@ -48,19 +49,36 @@ services:
         networks:
             - kbe
 
-    currency:
-        build: ./currency
-        container_name: currency
+    warehouse:
+        build: ./warehouse
+        container_name: warehouse
         expose:
-            - "8087"
+            - "8085"
         ports:
-            - "8087:8087"
+            - "8085:8085"
         environment:
-            RABBITMQ_HOST: rabbitmq
+            MYSQL_HOST: warehouse-mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_DB: warehousedb
+            SPRING_PROFILES_ACTIVE: docker
         depends_on:
-            - 'rabbitmq'
+            - 'warehouse-db-mysql'
         networks:
             - kbe
+
+    warehouse-db-mysql:
+        image: mysql:5.7
+        container_name: warehouse-mysql
+        ports:
+            - "3307:3306"
+        networks:
+            - kbe
+        volumes:
+            - kbe-mysql-data-warehouse:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABSE: warehousedb
 
     product-db-mysql:
         image: mysql:5.7
@@ -110,6 +128,7 @@ services:
 
 volumes:
     kbe-mysql-data:
+    kbe-mysql-data-warehouse:
     kbe-mongo-data:
 
 networks:
