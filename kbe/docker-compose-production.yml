@@ -27,6 +27,7 @@ services:
             MONGO_HOST: product-mongo
             RABBITMQ_HOST: rabbitmq
         depends_on:
+            - 'warehouse'
             - 'product-db-mysql'
             - 'product-db-mongo'
             - 'rabbitmq'
