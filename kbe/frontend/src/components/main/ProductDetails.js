@@ -22,7 +22,7 @@ class ProductDetails extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(this.props.currency === CURRENCY_US_DOLLAR && this.state.price !== this.props.component.price)
+        if(this.props.currency === CURRENCY_US_DOLLAR && this.state.price !== this.props.product.price)
             this.setState({price: this.props.product.price});
         else if(this.props.currency !== prevProps.currency || this.props.product.price !== prevProps.product.price)
             this.sendPriceRequest();
