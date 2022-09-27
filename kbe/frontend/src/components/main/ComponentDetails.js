@@ -1,39 +1,9 @@
 import React, { Component } from "react";
 
+import { price, currencySymbol } from "../Price.js"
 import KeyValueDisplay from "../KeyValueDisplay.js";
-import { sendHtmlRequest } from "./Main.js";
-
-const ENDPOINT_CURRENCY = "/currency";
 
 const CURRENCY_US_DOLLAR = "USD";
-const CURRENCY_EURO = "EUR";
-const CURRENCY_POUND = "GBP";
-const CURRENCY_YEN = "JPY";
-const CURRENCY_FRANCS = "CHF";
-
-function getCurrencySymbol(currency){
-    switch(currency){
-        case CURRENCY_EURO:
-            return '€';
-        case CURRENCY_POUND:
-            return '£';
-        case CURRENCY_YEN:
-            return '¥';
-        case CURRENCY_FRANCS:
-            return 'CHF';
-        default:
-            return '$';
-    }
-}
-
-function requestPrice(url, onReceive, onFail, value, priorCurrency, currency){
-    if(priorCurrency === currency)return;
-    let requestParams =
-        "?amount="+value+
-        "&currentCurrency="+priorCurrency+
-        "&newCurrency="+currency;
-    sendHtmlRequest("GET", url + ENDPOINT_CURRENCY + requestParams, onReceive, onFail);
-}
 
 class ComponentDetails extends Component{
     constructor(props){
@@ -56,7 +26,7 @@ class ComponentDetails extends Component{
     }
 
     sendPriceRequest(){
-        requestPrice(this.props.url, this.onReceivePrice, this.onFailPrice, this.props.component.price, CURRENCY_US_DOLLAR, this.props.currency);
+        price(this.props.url, this.onReceivePrice, this.onFailPrice, this.props.component.price, this.props.currency);
     }
 
     onReceivePrice(response){
@@ -68,13 +38,13 @@ class ComponentDetails extends Component{
     }
 
     render(){
-        let price = this.state.price === null ? "-" : parseFloat(this.state.price).toFixed(2);
+        let price = this.state.price === null ? "-" : parseFloat(this.state.price).toFixed(2) + " " + currencySymbol(this.props.currency);
         return(
             <div className='details' id='componentDetails'>
                 <h3>{this.props.component.brand + " - " + this.props.component.name}</h3>
                 <KeyValueDisplay keyName='Id' value={this.props.component.id} id='idDetail'/>
                 <KeyValueDisplay keyName='Type' value={this.props.component.type}/>
-                <KeyValueDisplay keyName='Price' value={price + " " + getCurrencySymbol(this.props.currency)}/>
+                <KeyValueDisplay keyName='Price' value={price}/>
                 <KeyValueDisplay keyName='Deliverable' value={this.props.component.deliverable ? "Yes" : "No"}/>
                 <KeyValueDisplay keyName='Location' value={this.props.component.location + " (" + this.props.component.osmLat.toFixed(3) + ", " + this.props.component.osmLon.toFixed(3) + ")"}/>
                 <KeyValueDisplay keyName='Dimensions' value={this.props.component.width + "mm, " + this.props.component.length + "mm"}/>

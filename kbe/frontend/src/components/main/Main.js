@@ -145,6 +145,7 @@ class Main extends Component{
 
     updateProducts(response){
         let rawProducts = JSON.parse(response);
+        console.log(rawProducts);
         let products = rawProducts.map(product =>
             createRawProduct(
                 product.price.price,
