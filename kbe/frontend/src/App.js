@@ -9,7 +9,7 @@ const SERVER_URL = 'http://gateway:8000'
 class App extends Component {
     constructor(props){
         super(props);
-        this.state = {screen: "main"};
+        this.state = {screen: "login"};
 
         this.onLogin = this.onLogin.bind(this);
         this.onLogout = this.onLogout.bind(this);
