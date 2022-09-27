@@ -22,6 +22,8 @@ const CURRENCY_US_DOLLAR = "USD";
 
 const MESSAGE_CREATE_FAILED = "Could not create product.";
 
+let id = 0;
+
 function requestComponents(url, onReceive, onFail){
     sendHtmlRequest("GET", url+ENDPOINT_COMPONENTS, onReceive, onFail);
 }
@@ -31,9 +33,9 @@ function requestProducts(url, onReceive, onFail){
 function requestCreateProduct(url, product, onReceive, onFail){
     let body = {
         selectedComponents: [
-            product.processor.id,
-            product.graphics.id,
-            product.storage.id
+            {componentId: product.processor.id},
+            {componentId: product.graphics.id},
+            {componentId: product.storage.id}
         ]
     }
     sendHtmlRequest("POST", url+ENDPOINT_PRODUCTS_CREATE, onReceive, onFail, body);
@@ -88,6 +90,7 @@ class Main extends Component{
         this.onTypeChange = this.onTypeChange.bind(this);
         this.displayProducts = this.displayProducts.bind(this);
         this.updateProducts = this.updateProducts.bind(this);
+        this.convertToProducts = this.convertToProducts.bind(this);
         this.onSelectProduct = this.onSelectProduct.bind(this);
         this.displayComponents = this.displayComponents.bind(this);
         this.updateComponents = this.updateComponents.bind(this);
@@ -145,7 +148,11 @@ class Main extends Component{
 
     updateProducts(response){
         let rawProducts = JSON.parse(response);
-        console.log(rawProducts);
+        let products = this.convertToProducts(rawProducts);
+        this.setState({products: products, loaded: true});
+    }
+
+    convertToProducts(rawProducts){
         let products = rawProducts.map(product =>
             createRawProduct(
                 product.price.price,
@@ -154,7 +161,6 @@ class Main extends Component{
                 this.state.components.find(component => component.id === product.selectedComponents[2].componentId)
             )
         );
-        let id = 0;
         products = products.map(product =>
             createProduct(
                 id++,
@@ -164,7 +170,7 @@ class Main extends Component{
                 product.components.find(component => component.type === "storage")
             )
         );
-        this.setState({products: products, loaded: true});
+        return products;
     }
 
     onSelectProduct(product){
@@ -198,7 +204,10 @@ class Main extends Component{
     }
 
     onCreated(response){
-        console.log("PRODUCT created");
+        let rawProducts = [JSON.parse(response)];
+        let product = this.convertToProducts(rawProducts);
+        this.state.products.push(product[0]);
+        this.setState({products: this.state.products, display: DISPLAY_PRODUCTS});
     }
 
     onCreateFail(){

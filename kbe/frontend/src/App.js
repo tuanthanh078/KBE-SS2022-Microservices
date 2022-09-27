@@ -4,7 +4,7 @@ import './App.css';
 import Login from './components/Login';
 import Main from './components/main/Main';
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'http://gateway:8000'
 
 class App extends Component {
     constructor(props){

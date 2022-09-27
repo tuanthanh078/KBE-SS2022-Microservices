@@ -73,7 +73,6 @@ class ProductDetails extends Component{
             <div className='details' id='productDetails'>
                 <div className='productHeadline'>
                     <label id='productHeadline'>Product</label>
-                    <label id='productHeadlineId'>{" (" + this.props.product.id + ")"}</label>
                     <select value={this.state.value} onChange={this.handleChange} id='productHeadlineSelect'>
                         <option value="processor">Processor</option>
                         <option value="graphics">Graphics</option>
