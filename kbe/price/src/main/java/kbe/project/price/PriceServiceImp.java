@@ -16,7 +16,7 @@ public class PriceServiceImp implements PriceService {
 
         for (SelectedComponents selectedComponent: selectedComponents) {
             System.out.println(selectedComponent);
-            price += selectedComponent.getPrice() * selectedComponent.getSelectedAmount();
+            price += selectedComponent.getPrice();
         }
 
         return new Price(price, "USD");

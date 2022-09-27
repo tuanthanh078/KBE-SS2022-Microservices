@@ -20,17 +20,14 @@ public class SelectedComponents implements Serializable {
     @Column(columnDefinition = "BINARY(16)")
     private UUID componentId;
     private Double price;
-    private int selectedAmount;
 
     public SelectedComponents(UUID componentId, int selectedAmount) {
         this.componentId = componentId;
-        this.selectedAmount = selectedAmount;
         this.price = 0D;
     }
 
     public SelectedComponents(String componentId, int selectedAmount) {
         this.componentId = UUID.fromString(componentId);
-        this.selectedAmount = selectedAmount;
         this.price = 0D;
     }
 }

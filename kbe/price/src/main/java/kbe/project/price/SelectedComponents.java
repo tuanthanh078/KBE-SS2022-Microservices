@@ -14,11 +14,9 @@ public class SelectedComponents implements Serializable {
 
     private UUID componentId;
     private Double price;
-    private int selectedAmount;
 
     public SelectedComponents(UUID componentId, int selectedAmount) {
         this.componentId = componentId;
-        this.selectedAmount = selectedAmount;
         this.price = 0D;
     }
 }

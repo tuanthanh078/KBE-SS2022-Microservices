@@ -42,6 +42,6 @@ public class Component {
     private Double osmLon;
 
     public SelectedComponents toSelectedComponents() {
-        return new SelectedComponents(this.id,this.price,1);
+        return new SelectedComponents(this.id,this.price);
     }
 }
