@@ -29,8 +29,6 @@ public class ProductServiceImp implements ProductService {
     public CustomizedProduct getProductById(UUID id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
         CustomizedProduct customizedProduct = getCustomizedProduct(product);
-        Price price = customizedProductPub.getPrice(customizedProduct);
-        customizedProduct.setPrice(price);
         return customizedProduct;
     }
 
@@ -39,7 +37,10 @@ public class ProductServiceImp implements ProductService {
         for (Component component : product.getComponents()) {
             selectedComponents.add(component.toSelectedComponents());
         }
-        return new CustomizedProduct(selectedComponents);
+        CustomizedProduct customizedProduct = new CustomizedProduct(selectedComponents);
+        Price price = customizedProductPub.getPrice(customizedProduct);
+        customizedProduct.setPrice(price);
+        return customizedProduct;
     }
 
     @Override
@@ -48,9 +49,6 @@ public class ProductServiceImp implements ProductService {
         List<CustomizedProduct> customizedProductList = new ArrayList<>();
         for (Product product : productList) {
             CustomizedProduct customizedProduct = getCustomizedProduct(product);
-            Price price = customizedProductPub.getPrice(customizedProduct);
-            customizedProduct.setPrice(price);
-//            customizedProduct = createCustomizedProduct(customizedProduct);
             customizedProductList.add(customizedProduct);
         }
         return customizedProductList;

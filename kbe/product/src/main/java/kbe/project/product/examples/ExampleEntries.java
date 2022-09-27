@@ -278,7 +278,7 @@ public class ExampleEntries {
 
     public static Component getExampleComponent4() {
         try {
-            return new Component(UUID.fromString("e7e0cc9d-a300-4032-8b6c-44d439845676"),
+            return new Component(UUID.fromString("7bf547c6-7477-40f2-8a6f-831327c03dac"),
                     COMPONENT_DATE_FORMAT.parse("2021-03-22"),
                     "MSI",
                     "MEG Z690 UNIFY",
