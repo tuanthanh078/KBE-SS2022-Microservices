@@ -34,9 +34,6 @@ public class ProductApplication {
 	}
 
 	@Autowired
-	ProductService productService;
-
-	@Autowired
 	ProductRepository productRepository;
 
 	@Autowired
@@ -56,11 +53,11 @@ public class ProductApplication {
 	private void initializeProductEntries() {
 		if (productRepository.count() == 0) {
 			ExampleEntries exampleEntries = new ExampleEntries(this.componentService);
-			productService.addProduct(exampleEntries.defineProduct1());
-			productService.addProduct(exampleEntries.defineProduct2());
-			productService.addProduct(exampleEntries.defineProduct3());
-			productService.addProduct(exampleEntries.defineProduct4());
-			productService.addProduct(exampleEntries.defineProduct5());
+			productRepository.insert(exampleEntries.defineProduct1());
+			productRepository.insert(exampleEntries.defineProduct2());
+			productRepository.insert(exampleEntries.defineProduct3());
+			productRepository.insert(exampleEntries.defineProduct4());
+			productRepository.insert(exampleEntries.defineProduct5());
 		}
 
 		System.out.println("Products in database:");

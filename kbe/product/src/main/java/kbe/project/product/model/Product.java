@@ -57,4 +57,9 @@ public class Product {
             if(component.getType().equals(type))return component;
         throw new IllegalArgumentException("Component type \"" + type + "\" is not valid.");
     }
+
+    public Product(UUID id, Set<Component> components) {
+        this.id = id;
+        this.components = components;
+    }
 }

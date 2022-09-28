@@ -9,6 +9,5 @@ import java.util.UUID;
 public interface ProductService {
     CustomizedProduct getProductById(UUID id);
     List<CustomizedProduct> getAllProducts();
-    Product addProduct(Product product);
-    CustomizedProduct createCustomizedProduct(CustomizedProduct customProduct);
+    Product addProduct(CustomizedProduct customizedProduct);
 }

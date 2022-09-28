@@ -39,17 +39,8 @@ public class ProductController {
     @Operation(summary = "Add a product.")
     Product addProduct(
             @Parameter(description = "Product that needs to be added")
-            @RequestBody Product product) {
-
-        return productService.addProduct(product);
-    }
-
-    @PostMapping("/custom")
-    @Operation(summary = "Create a product.")
-    ResponseEntity<CustomizedProduct> createCustomizedProduct(
-            @Parameter(description = "Customized product which is created from hardwares.")
             @RequestBody CustomizedProduct customizedProduct) {
 
-        return ResponseEntity.ok(productService.createCustomizedProduct(customizedProduct));
+        return productService.addProduct(customizedProduct);
     }
 }
