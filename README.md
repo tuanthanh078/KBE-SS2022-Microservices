@@ -1,5 +1,7 @@
 # KBE-SS2022-Microservices
 
+[![CI-CD](https://github.com/tuanthanh078/KBE-SS2022-Microservices/actions/workflows/cicd.yml/badge.svg)](https://github.com/tuanthanh078/KBE-SS2022-Microservices/actions/workflows/cicd.yml)
+
 ## Introduction
 
 Project for the course "Komponentenbasierte Entwicklung" at Hochschule für Technik und Wirtschaft Berlin, So2022
